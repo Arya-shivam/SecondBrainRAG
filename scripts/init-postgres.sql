@@ -1,0 +1,2 @@
+CREATE DATABASE langfuse;
+GRANT ALL PRIVILEGES ON DATABASE langfuse TO airflow;
