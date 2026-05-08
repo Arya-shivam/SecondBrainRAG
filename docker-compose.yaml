@@ -184,7 +184,7 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_URL=postgresql://airflow:airflow@postgres:5432/airflow
+      - POSTGRES_URL=postgresql://airflow:airflow@postgres:5432/postgres
       - OPENSEARCH_URL=http://opensearch:9200
     depends_on:
       postgres:
