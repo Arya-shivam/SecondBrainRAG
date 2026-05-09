@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Dhi - Second Brain Capture",
-  "version": "1.0",
-  "description": "Send links and articles instantly to your local Dhi RAG system.",
+  "name": "Dhi - Second Brain",
+  "version": "1.1",
+  "description": "Send links to your Second Brain and chat with Dhi.",
   "permissions": [
     "activeTab",
     "contextMenus",
-    "notifications"
+    "notifications",
+    "sidePanel"
   ],
   "host_permissions": [
     "http://127.0.0.1:8000/*",
@@ -15,7 +16,10 @@
   "background": {
     "service_worker": "background.js"
   },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
   "action": {
-    "default_title": "Send to Dhi"
+    "default_title": "Chat with Dhi"
   }
 }

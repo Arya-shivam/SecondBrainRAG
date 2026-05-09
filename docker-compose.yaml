@@ -195,7 +195,8 @@ services:
     volumes:
       - ./src:/app/src
       - ./scripts:/app/scripts
-      - ./data:/app/data
+      # Use the real Obsidian vault if provided in .env, otherwise fallback to ./data
+      - ${OBSIDIAN_VAULT_PATH:-./data}:/app/data
 
 volumes:
   postgres-db-volume:

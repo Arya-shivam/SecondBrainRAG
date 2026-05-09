@@ -52,12 +52,10 @@ async function sendToDhi(url, source) {
   }
 }
 
-// 1. Handle clicking the extension icon (saves current page)
-chrome.action.onClicked.addListener((tab) => {
-  if (tab.url && tab.url.startsWith("http")) {
-    sendToDhi(tab.url, "icon-click");
-  }
-});
+// Enable side panel on action click
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error));
 
 // 2. Set up Right-Click Context Menu
 chrome.runtime.onInstalled.addListener(() => {
@@ -76,5 +74,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (urlToSave && urlToSave.startsWith("http")) {
       sendToDhi(urlToSave, "context-menu");
     }
+  }
+});
+
+// Handle messages from the side panel
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "sendToDhi" && request.url) {
+    sendToDhi(request.url, "side-panel");
   }
 });

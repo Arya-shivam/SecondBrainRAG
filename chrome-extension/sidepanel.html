@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhi - Second Brain</title>
+    <link rel="stylesheet" href="sidepanel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <svg width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="50" fill="#4285F4"/>
+                    <text x="50" y="65" font-family="Inter" font-size="40" font-weight="600" text-anchor="middle" fill="white">D</text>
+                </svg>
+                <h1>Dhi Brain</h1>
+            </div>
+            <button id="save-page-btn" class="action-btn" title="Save current page to Second Brain">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Chat Area -->
+        <main id="chat-container" class="chat-container">
+            <div class="message assistant-msg">
+                Hello! I'm Dhi. What would you like to know from your Second Brain?
+            </div>
+            <!-- Dynamic messages will be appended here -->
+        </main>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="loading hidden">
+            <div class="dots">
+                <span></span><span></span><span></span>
+            </div>
+            Dhi is thinking...
+        </div>
+
+        <!-- Input Area -->
+        <footer class="input-area">
+            <form id="chat-form">
+                <input type="text" id="query-input" placeholder="Ask your Second Brain..." autocomplete="off">
+                <button type="submit" id="send-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </footer>
+    </div>
+    
+    <script src="sidepanel.js"></script>
+</body>
+</html>
