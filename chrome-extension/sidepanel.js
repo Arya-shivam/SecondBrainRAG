@@ -9,10 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle pressing "Save Page" button in the header
     savePageBtn.addEventListener("click", () => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
             if (tabs[0] && tabs[0].url) {
                 chrome.runtime.sendMessage({ action: "sendToDhi", url: tabs[0].url });
                 addMessage("Sending current page to Second Brain...", "assistant");
+            } else {
+                addMessage("Error: Could not capture the page URL. Make sure you are on a valid webpage.", "assistant error-msg");
             }
         });
     });

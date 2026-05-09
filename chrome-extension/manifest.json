@@ -5,6 +5,7 @@
   "description": "Send links to your Second Brain and chat with Dhi.",
   "permissions": [
     "activeTab",
+    "tabs",
     "contextMenus",
     "notifications",
     "sidePanel"
