@@ -21,9 +21,14 @@ logger = logging.getLogger(__name__)
 DEFAULT_VAULT_PATH = Path("data/obsidian").resolve()
 VAULT = Path(os.getenv("OBSIDIAN_VAULT_PATH", DEFAULT_VAULT_PATH))
 
-def ingest(source: str, tags: list[str] = None) -> Path:
+def ingest(source: str, tags: list[str] = None, folder: str = None) -> Path:
     """
-    Detects type of source (URL or file), extracts text, and writes to vault as .md
+    Detects type of source (URL or file), extracts text, and writes to vault as .md.
+    
+    Args:
+        source: URL or local file path.
+        tags:   List of tags to attach to the note.
+        folder: Optional custom vault subfolder. If None, auto-detects from content type.
     """
     tags = tags or []
     source = source.strip()
@@ -31,8 +36,8 @@ def ingest(source: str, tags: list[str] = None) -> Path:
 
     if source.startswith("http://") or source.startswith("https://"):
         if "youtube.com" in source or "youtu.be" in source:
-            return _ingest_youtube(source, date, tags)
-        return _ingest_url(source, date, tags)
+            return _ingest_youtube(source, date, tags, folder=folder)
+        return _ingest_url(source, date, tags, folder=folder)
 
     path = Path(source)
     if not path.exists():
@@ -41,11 +46,11 @@ def ingest(source: str, tags: list[str] = None) -> Path:
     ext = path.suffix.lower()
 
     if ext == ".pdf":
-        return _ingest_pdf(path, date, tags)
+        return _ingest_pdf(path, date, tags, folder=folder)
     elif ext == ".docx":
-        return _ingest_docx(path, date, tags)
+        return _ingest_docx(path, date, tags, folder=folder)
     elif ext in [".md", ".txt"]:
-        return _ingest_text(path, date, tags)
+        return _ingest_text(path, date, tags, folder=folder)
     else:
         raise ValueError(f"Unsupported file type: {ext}")
 
@@ -147,7 +152,7 @@ def index_markdown_file(filepath: Path):
 
 
 
-def _ingest_url(url: str, date: str, tags: list) -> Path:
+def _ingest_url(url: str, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Fetching URL: {url}")
     html = trafilatura.fetch_url(url)
     if not html:
@@ -160,30 +165,30 @@ def _ingest_url(url: str, date: str, tags: list) -> Path:
     # Use first line as title, fallback to URL
     lines = [line.strip() for line in text.split("\n") if line.strip()]
     title = lines[0][:80] if lines else url
-    return _write_vault("articles", title, text, date,
+    return _write_vault(folder or "articles", title, text, date,
                          ["article"] + tags, {"url": url})
 
 
-def _ingest_pdf(path: Path, date: str, tags: list) -> Path:
+def _ingest_pdf(path: Path, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Extracting PDF: {path}")
     doc = fitz.open(path)
     text = "\n".join(page.get_text() for page in doc)
-    return _write_vault("pdfs", path.stem, text, date, ["pdf"] + tags)
+    return _write_vault(folder or "pdfs", path.stem, text, date, ["pdf"] + tags)
 
 
-def _ingest_docx(path: Path, date: str, tags: list) -> Path:
+def _ingest_docx(path: Path, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Extracting DOCX: {path}")
     doc = Document(path)
     text = "\n".join(p.text for p in doc.paragraphs if p.text.strip())
-    return _write_vault("docs", path.stem, text, date, ["doc"] + tags)
+    return _write_vault(folder or "docs", path.stem, text, date, ["doc"] + tags)
 
 
-def _ingest_text(path: Path, date: str, tags: list) -> Path:
+def _ingest_text(path: Path, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Copying Text/MD: {path}")
     text = path.read_text(encoding="utf-8")
-    return _write_vault("journal", path.stem, text, date, ["journal"] + tags)
+    return _write_vault(folder or "journal", path.stem, text, date, ["journal"] + tags)
 
-def _ingest_youtube(url: str, date: str, tags: list) -> Path:
+def _ingest_youtube(url: str, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Fetching YouTube transcript: {url}")
     transcript_obj = yt_fetcher.fetch_transcript(url)
     
@@ -198,7 +203,7 @@ def _ingest_youtube(url: str, date: str, tags: list) -> Path:
     
     text = f"**Source:** [YouTube]({transcript_obj.url})  \n**Channel:** {transcript_obj.channel or 'Unknown'}\n\n## Transcript\n\n{transcript_obj.transcript}"
     
-    return _write_vault("youtube", transcript_obj.title, text, date, ["youtube"] + tags, meta)
+    return _write_vault(folder or "youtube", transcript_obj.title, text, date, ["youtube"] + tags, meta)
 
 def main():
     parser = argparse.ArgumentParser(description="Universal Data Ingestion to Obsidian Vault")

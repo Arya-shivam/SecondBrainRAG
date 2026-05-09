@@ -71,6 +71,110 @@ body {
     color: var(--text-primary);
 }
 
+.header-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Settings Panel */
+.settings-panel {
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+}
+
+.settings-panel.hidden {
+    display: none;
+}
+
+.settings-header {
+    padding: 10px 16px 0;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+}
+
+.settings-body {
+    padding: 10px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.settings-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.settings-hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.folder-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: border-color 0.2s;
+}
+
+.folder-input-row:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.folder-prefix {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.settings-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+}
+
+.settings-tip {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.settings-save-btn {
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+    align-self: flex-end;
+}
+
+.settings-save-btn:hover {
+    background: var(--accent-hover);
+}
+
 /* Chat Container */
 .chat-container {
     flex: 1;

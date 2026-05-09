@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "second-brain": {
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "-m",
+        "src.mcp_server"
+      ],
+      "cwd": "C:\\Users\\aryas\\OneDrive\\Desktop\\prodRAG",
+      "env": {
+        "OPENROUTER_API_KEY": "YOUR_KEY_HERE",
+        "OPENSEARCH_HOST": "localhost",
+        "OPENSEARCH_PORT": "9200"
+      }
+    }
+  }
+}
