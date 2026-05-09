@@ -186,6 +186,7 @@ services:
     environment:
       - POSTGRES_URL=postgresql://airflow:airflow@postgres:5432/postgres
       - OPENSEARCH_URL=http://opensearch:9200
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
     depends_on:
       postgres:
         condition: service_healthy
@@ -193,6 +194,7 @@ services:
         condition: service_healthy
     volumes:
       - ./src:/app/src
+      - ./scripts:/app/scripts
       - ./data:/app/data
 
 volumes:

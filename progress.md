@@ -30,6 +30,8 @@
 ### Telegram Bot (Dhi)
 - [ ] Create the `telegram_bot.py` script so you can send links and thoughts to your bot from your phone.
 
-### Retrieval & Generation
-- [ ] Implement the LlamaIndex retrieval pipeline, hybrid search (BM25 + vectors) in OpenSearch, and answer generation using local Ollama models.
+### Retrieval & Generation (Phase 3)
+- [x] Implement the RAG retrieval pipeline (Hybrid search: BM25 + vectors in OpenSearch with RRF).
+- [x] Create the LLM generator using OpenRouter (`meta-llama/llama-3.1-8b-instruct:free` for now) and strict grounding prompts.
+- [x] Create the `/ask` endpoint to orchestrate retrieval and generation.
 - [ ] Establish the two-way sync where Airflow picks up the `ingested: false` notes, chunks them, and adds them to OpenSearch.
