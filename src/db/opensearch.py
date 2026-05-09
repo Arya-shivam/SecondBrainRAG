@@ -23,7 +23,7 @@ def init_opensearch(client: OpenSearch):
                 "published":    { "type": "date" },
                 "embedding": {
                     "type": "knn_vector",
-                    "dimension": 768,
+                    "dimension": 2048,
                     "method": {
                         "name": "hnsw",
                         "engine": "nmslib",
