@@ -53,18 +53,27 @@ def sync_obsidian_vault():
             chunks = chunk_markdown(content)
             logging.info(f"Split {filepath.name} into {len(chunks)} chunks.")
             
-            for i, chunk in enumerate(chunks):
-                vector = asyncio.run(embed_text(chunk))
-                if not vector:
+            from src.rag.embedder import embed_texts
+            
+            # Process in batches to avoid 429 rate limits
+            BATCH_SIZE = 20
+            for batch_start in range(0, len(chunks), BATCH_SIZE):
+                batch_chunks = chunks[batch_start:batch_start + BATCH_SIZE]
+                
+                try:
+                    batch_vectors = asyncio.run(embed_texts(batch_chunks))
+                except Exception as e:
+                    logging.error(f"Failed to generate embeddings for batch starting at {batch_start}: {e}")
                     continue
                     
-                metadata = {
-                    "source": filepath.name,
-                    "title": title,
-                    "chunk_index": i,
-                    "filepath": str(filepath.resolve())
-                }
-                index_chunk(client, document_id=filepath.name, chunk_index=i, text=chunk, title=title, creators=[], source_type="markdown", published_date=None, embedding=vector)
+                if len(batch_vectors) != len(batch_chunks):
+                    logging.warning(f"Embedding count mismatch for batch {batch_start}")
+                    continue
+                    
+                for i, vector in enumerate(batch_vectors):
+                    chunk_idx = batch_start + i
+                    chunk = batch_chunks[i]
+                    index_chunk(client, document_id=filepath.name, chunk_index=chunk_idx, text=chunk, title=title, creators=[], source_type="markdown", published_date=None, embedding=vector)
             
             # Mark as ingested: true
             new_content = content.replace("ingested: false", "ingested: true")

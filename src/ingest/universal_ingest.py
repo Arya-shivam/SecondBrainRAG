@@ -11,7 +11,7 @@ from docx import Document
 
 from . import yt_fetcher
 from src.rag.chunker import chunk_markdown
-from src.rag.embedder import embed_text
+from src.rag.embedder import embed_texts
 from src.db.opensearch import index_chunk, get_opensearch_client
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -112,25 +112,36 @@ def index_markdown_file(filepath: Path):
     
     import asyncio
     
-    for i, chunk in enumerate(chunks):
-        # Generate embedding
-        vector = asyncio.run(embed_text(chunk))
-        if not vector:
-            logger.warning(f"Failed to generate embedding for chunk {i} of {filepath.name}")
+    # Process in batches to avoid 429 rate limits
+    BATCH_SIZE = 20
+    for batch_start in range(0, len(chunks), BATCH_SIZE):
+        batch_chunks = chunks[batch_start:batch_start + BATCH_SIZE]
+        
+        try:
+            batch_vectors = asyncio.run(embed_texts(batch_chunks))
+        except Exception as e:
+            logger.error(f"Failed to generate embeddings for batch starting at {batch_start}: {e}")
             continue
             
-        # Index into OpenSearch
-        index_chunk(
-            client=client, 
-            document_id=filepath.name, 
-            chunk_index=i, 
-            text=chunk, 
-            title=title, 
-            creators=[], 
-            source_type="markdown", 
-            published_date=None, 
-            embedding=vector
-        )
+        if len(batch_vectors) != len(batch_chunks):
+            logger.warning(f"Embedding count mismatch for batch {batch_start}. Expected {len(batch_chunks)}, got {len(batch_vectors)}.")
+            continue
+            
+        for i, vector in enumerate(batch_vectors):
+            chunk_idx = batch_start + i
+            chunk = batch_chunks[i]
+            
+            index_chunk(
+                client=client, 
+                document_id=filepath.name, 
+                chunk_index=chunk_idx, 
+                text=chunk, 
+                title=title, 
+                creators=[], 
+                source_type="markdown", 
+                published_date=None, 
+                embedding=vector
+            )
         
     logger.info(f"Successfully indexed {filepath.name} into OpenSearch!")
 
