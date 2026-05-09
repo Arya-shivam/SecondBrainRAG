@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     # OpenRouter — LLM & Embeddings gateway
     openrouter_api_key: str = ""
-    openrouter_model: str = "meta-llama/llama-3.3-70b-instruct:free"  # Free tier default
+    openrouter_model: str = "openrouter/free"  # Free tier default
     embed_model: str = "nvidia/llama-nemotron-embed-vl-1b-v2:free"
 
     class Config:
