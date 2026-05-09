@@ -10,7 +10,9 @@ import trafilatura
 from docx import Document
 
 from . import yt_fetcher
-
+from src.rag.chunker import chunk_markdown
+from src.rag.embedder import embed_text
+from src.db.opensearch import index_chunk, get_opensearch_client
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -71,7 +73,7 @@ source_type: {folder}
 title: "{title}"
 date: {date}
 tags: [{tags_str}]
-ingested: false
+ingested: true
 {frontmatter}---
 
 # {title}
@@ -80,7 +82,58 @@ ingested: false
 """
     filepath.write_text(content, encoding="utf-8")
     logger.info(f"Saved → {filepath.name} to {out_dir}")
+    
+    # Real-time indexing to OpenSearch
+    try:
+        index_markdown_file(filepath)
+    except Exception as e:
+        logger.error(f"Failed to index {filepath.name}: {e}")
+        
     return filepath
+
+def index_markdown_file(filepath: Path):
+    """
+    Reads a saved markdown file, chunks it, embeds it, and indexes it into OpenSearch.
+    """
+    logger.info(f"Starting indexing for {filepath.name}...")
+    content = filepath.read_text(encoding="utf-8")
+    
+    # Extract title from frontmatter or content
+    title = filepath.stem
+    for line in content.split('\\n'):
+        if line.startswith("title:"):
+            title = line.replace("title:", "").strip().strip('"')
+            break
+            
+    chunks = chunk_markdown(content)
+    logger.info(f"Split {filepath.name} into {len(chunks)} chunks.")
+    
+    client = get_opensearch_client()
+    
+    import asyncio
+    
+    for i, chunk in enumerate(chunks):
+        # Generate embedding
+        vector = asyncio.run(embed_text(chunk))
+        if not vector:
+            logger.warning(f"Failed to generate embedding for chunk {i} of {filepath.name}")
+            continue
+            
+        # Index into OpenSearch
+        index_chunk(
+            client=client, 
+            document_id=filepath.name, 
+            chunk_index=i, 
+            text=chunk, 
+            title=title, 
+            creators=[], 
+            source_type="markdown", 
+            published_date=None, 
+            embedding=vector
+        )
+        
+    logger.info(f"Successfully indexed {filepath.name} into OpenSearch!")
+
 
 
 def _ingest_url(url: str, date: str, tags: list) -> Path:
