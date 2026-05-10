@@ -99,55 +99,72 @@ ingested: true
 def index_markdown_file(filepath: Path):
     """
     Reads a saved markdown file, chunks it, embeds it, and indexes it into OpenSearch.
+    Ensures the index exists before writing, then splits content into chunks,
+    generates embeddings via OpenRouter, and stores each chunk as a vector document.
     """
     logger.info(f"Starting indexing for {filepath.name}...")
     content = filepath.read_text(encoding="utf-8")
-    
-    # Extract title from frontmatter or content
+
+    # Extract title from frontmatter — use real newline '\n' not literal '\\n'
     title = filepath.stem
-    for line in content.split('\\n'):
+    for line in content.split("\n"):
         if line.startswith("title:"):
             title = line.replace("title:", "").strip().strip('"')
             break
-            
+
     chunks = chunk_markdown(content)
     logger.info(f"Split {filepath.name} into {len(chunks)} chunks.")
-    
+
     client = get_opensearch_client()
-    
+
+    # Ensure index exists with correct mapping before writing
+    from src.db.opensearch import init_opensearch
+    init_opensearch(client)
+
     import asyncio
-    
-    # Process in batches to avoid 429 rate limits
-    BATCH_SIZE = 20
+
+    # Process in batches to avoid rate limits
+    BATCH_SIZE = 10
     for batch_start in range(0, len(chunks), BATCH_SIZE):
         batch_chunks = chunks[batch_start:batch_start + BATCH_SIZE]
-        
+
         try:
-            batch_vectors = asyncio.run(embed_texts(batch_chunks))
+            # asyncio.run() fails if there is already a running loop (e.g. inside FastAPI).
+            # Use nest_asyncio-safe approach: get or create event loop.
+            try:
+                loop = asyncio.get_running_loop()
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor() as pool:
+                    future = pool.submit(asyncio.run, embed_texts(batch_chunks))
+                    batch_vectors = future.result()
+            except RuntimeError:
+                batch_vectors = asyncio.run(embed_texts(batch_chunks))
         except Exception as e:
-            logger.error(f"Failed to generate embeddings for batch starting at {batch_start}: {e}")
+            logger.error(f"Failed to generate embeddings for batch at {batch_start}: {e}")
             continue
-            
+
         if len(batch_vectors) != len(batch_chunks):
-            logger.warning(f"Embedding count mismatch for batch {batch_start}. Expected {len(batch_chunks)}, got {len(batch_vectors)}.")
+            logger.warning(
+                f"Embedding count mismatch for batch {batch_start}. "
+                f"Expected {len(batch_chunks)}, got {len(batch_vectors)}."
+            )
             continue
-            
+
         for i, vector in enumerate(batch_vectors):
             chunk_idx = batch_start + i
             chunk = batch_chunks[i]
-            
             index_chunk(
-                client=client, 
-                document_id=filepath.name, 
-                chunk_index=chunk_idx, 
-                text=chunk, 
-                title=title, 
-                creators=[], 
-                source_type="markdown", 
-                published_date=None, 
-                embedding=vector
+                client=client,
+                document_id=filepath.name,
+                chunk_index=chunk_idx,
+                text=chunk,
+                title=title,
+                creators=[],
+                source_type="markdown",
+                published_date=None,
+                embedding=vector,
             )
-        
+
     logger.info(f"Successfully indexed {filepath.name} into OpenSearch!")
 
 
