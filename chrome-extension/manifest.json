@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dhi - Second Brain",
-  "version": "1.1",
+  "version": "1.2.0",
   "description": "Send links to your Second Brain and chat with Dhi.",
   "permissions": [
     "activeTab",
@@ -19,7 +19,7 @@
     "service_worker": "background.js"
   },
   "side_panel": {
-    "default_path": "sidepanel.html"
+    "default_path": "dist/sidepanel.html"
   },
   "action": {
     "default_title": "Chat with Dhi"

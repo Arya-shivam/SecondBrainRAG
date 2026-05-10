@@ -2,19 +2,13 @@
 embedder.py — Generates embedding vectors for text using OpenRouter's API.
 
 Uses nvidia/llama-nemotron-embed-vl-1b-v2:free (2048-dim) via OpenRouter.
-This model requires input as a list of content objects:
-  [{"type": "text", "text": "..."}]
+This model expects plain string(s) as input, NOT content objects.
 """
 import logging
 import httpx
 from src.config import settings
 
 logger = logging.getLogger(__name__)
-
-
-def _make_content(text: str) -> list:
-    """Wrap plain text into the content-object format required by the nvidia embed model."""
-    return [{"type": "text", "text": text}]
 
 
 async def embed_text(text: str) -> list[float]:
@@ -31,7 +25,7 @@ async def embed_text(text: str) -> list[float]:
             },
             json={
                 "model": settings.embed_model,
-                "input": [_make_content(text)],
+                "input": text,
                 "encoding_format": "float",
             },
         )
@@ -59,7 +53,7 @@ async def embed_texts(texts: list[str]) -> list[list[float]]:
             },
             json={
                 "model": settings.embed_model,
-                "input": [_make_content(t) for t in texts],
+                "input": texts,
                 "encoding_format": "float",
             },
         )
