@@ -20,10 +20,10 @@ interface StatusState { type: StatusType; message: string }
 
 // ── Status Bar ─────────────────────────────────────────────────────────────
 const StatusBar: React.FC<{ status: StatusState; onDismiss: () => void }> = ({ status, onDismiss }) => {
-  const colors: Record<StatusType, string> = {
-    processing: 'bg-amber-500/10 border-amber-500/30 text-amber-300',
-    success: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300',
-    error: 'bg-red-500/10 border-red-500/30 text-red-300',
+  const cfg: Record<StatusType, { border: string; text: string }> = {
+    processing: { border: 'border-white/10', text: 'text-white/50' },
+    success:    { border: 'border-white/10', text: 'text-white/70' },
+    error:      { border: 'border-white/10', text: 'text-white/40' },
   }
   const Icon = status.type === 'processing' ? Loader2 : status.type === 'success' ? CheckCircle2 : XCircle
   return (
@@ -31,14 +31,14 @@ const StatusBar: React.FC<{ status: StatusState; onDismiss: () => void }> = ({ s
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className={`flex items-center gap-2 px-4 py-2 border-b text-xs font-medium ${colors[status.type]}`}
+      transition={{ duration: 0.15 }}
+      className={`flex items-center gap-2 px-4 py-1.5 border-b ${cfg[status.type].border} ${cfg[status.type].text}`}
     >
-      <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${status.type === 'processing' ? 'animate-spin' : ''}`} />
-      <span className="flex-1">{status.message}</span>
+      <Icon className={`w-3 h-3 flex-shrink-0 ${status.type === 'processing' ? 'animate-spin' : ''}`} />
+      <span className="flex-1 text-[10px] font-light tracking-wide">{status.message}</span>
       {status.type !== 'processing' && (
-        <button onClick={onDismiss} className="opacity-60 hover:opacity-100 transition-opacity">
-          <X className="w-3 h-3" />
+        <button onClick={onDismiss} className="opacity-30 hover:opacity-70 transition-opacity">
+          <X className="w-2.5 h-2.5" />
         </button>
       )}
     </motion.div>
@@ -50,38 +50,41 @@ const MessageBubble: React.FC<{ msg: Message }> = ({ msg }) => {
   const isUser = msg.role === 'user'
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.22, ease: 'easeOut' }}
-      className={`flex gap-2 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      className={`flex gap-2.5 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
     >
+      {/* Avatar */}
       {!isUser && (
-        <div className="w-6 h-6 rounded-full bg-blue-600/80 flex items-center justify-center flex-shrink-0 mt-1 ring-1 ring-blue-500/40">
-          <Brain className="w-3.5 h-3.5 text-white" />
+        <div className="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <Brain className="w-2.5 h-2.5 text-white/40" />
         </div>
       )}
-      <div className={`max-w-[80%] ${isUser ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
-        <div className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+
+      <div className={`max-w-[82%] flex flex-col gap-1.5 ${isUser ? 'items-end' : 'items-start'}`}>
+        {/* Bubble */}
+        <div className={`px-3 py-2 rounded-2xl text-[11px] font-light leading-relaxed tracking-wide ${
           isUser
-            ? 'bg-blue-600 text-white rounded-br-sm shadow-lg shadow-blue-900/30'
+            ? 'bg-white text-black rounded-br-sm'
             : msg.isError
-            ? 'bg-red-950/60 text-red-300 border border-red-800/50 rounded-bl-sm'
-            : 'bg-slate-800/80 text-slate-100 border border-slate-700/50 rounded-bl-sm backdrop-blur-sm'
+            ? 'bg-transparent border border-white/10 text-white/30 rounded-bl-sm italic'
+            : 'bg-white/[0.04] border border-white/[0.07] text-white/80 rounded-bl-sm'
         }`}>
           {msg.text}
         </div>
 
         {/* Source pills */}
         {msg.sources && msg.sources.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 px-1">
+          <div className="flex flex-wrap gap-1">
             {[...new Map(msg.sources.map(s => [s.title, s])).values()].map((src, i) => (
-              <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-medium">
-                <BookOpen className="w-2.5 h-2.5" />
-                {src.title.length > 28 ? src.title.slice(0, 28) + '…' : src.title}
+              <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-white/10 text-white/30 text-[9px] font-light tracking-wide">
+                <BookOpen className="w-2 h-2" />
+                {src.title.length > 26 ? src.title.slice(0, 26) + '…' : src.title}
               </span>
             ))}
             {msg.latency && (
-              <span className="text-[10px] text-slate-500 px-1 flex items-center">
+              <span className="text-[9px] text-white/20 font-light flex items-center px-1">
                 {(msg.latency / 1000).toFixed(1)}s
               </span>
             )}
@@ -93,43 +96,48 @@ const MessageBubble: React.FC<{ msg: Message }> = ({ msg }) => {
 }
 
 // ── Settings Drawer ────────────────────────────────────────────────────────
-const SettingsDrawer: React.FC<{ folder: string; onFolderChange: (v: string) => void; onSave: () => void; onClose: () => void }> = ({ folder, onFolderChange, onSave, onClose }) => (
+const SettingsDrawer: React.FC<{
+  folder: string; onFolderChange: (v: string) => void; onSave: () => void; onClose: () => void
+}> = ({ folder, onFolderChange, onSave, onClose }) => (
   <motion.div
-    initial={{ opacity: 0, y: -8 }}
+    initial={{ opacity: 0, y: -6 }}
     animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -8 }}
-    transition={{ duration: 0.18 }}
-    className="border-b border-slate-700/60 bg-slate-900/80 backdrop-blur-sm px-4 py-3"
+    exit={{ opacity: 0, y: -6 }}
+    transition={{ duration: 0.15 }}
+    className="border-b border-white/[0.06] bg-black/60 backdrop-blur-md px-4 py-3"
   >
     <div className="flex items-center justify-between mb-3">
-      <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Settings</span>
-      <button onClick={onClose} className="text-slate-500 hover:text-slate-300 transition-colors">
-        <X className="w-4 h-4" />
+      <span className="text-[9px] font-light text-white/30 uppercase tracking-[0.15em]">Settings</span>
+      <button onClick={onClose} className="text-white/20 hover:text-white/50 transition-colors">
+        <X className="w-3 h-3" />
       </button>
     </div>
-    <label className="block text-xs text-slate-300 mb-1.5 font-medium">Default Save Folder</label>
+    <label className="block text-[10px] text-white/40 mb-1.5 font-light tracking-wide">Default Save Folder</label>
     <div className="flex gap-2">
-      <div className="flex items-center flex-1 gap-1.5 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2">
-        <span className="text-slate-500 text-xs">vault /</span>
+      <div className="flex items-center flex-1 gap-1.5 bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2">
+        <span className="text-white/20 text-[10px] font-light">vault /</span>
         <input
           value={folder}
           onChange={(e) => onFolderChange(e.target.value)}
           placeholder="articles"
-          className="flex-1 bg-transparent text-slate-100 text-xs outline-none placeholder-slate-600"
+          className="flex-1 bg-transparent text-white/70 text-[10px] font-light outline-none placeholder-white/15 tracking-wide"
         />
       </div>
-      <button onClick={onSave} className="px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition-colors flex items-center gap-1">
-        Save <ChevronRight className="w-3 h-3" />
+      <button
+        onClick={onSave}
+        className="px-3 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white/60 text-[10px] font-light transition-all flex items-center gap-1"
+      >
+        Save <ChevronRight className="w-2.5 h-2.5" />
       </button>
     </div>
-    <p className="text-[10px] text-slate-500 mt-1.5">Leave blank to auto-detect (articles, youtube, pdfs…)</p>
+    <p className="text-[9px] text-white/20 mt-1.5 font-light">Leave blank to auto-detect (articles, youtube, pdfs…)</p>
   </motion.div>
 )
 
 // ── Main App ───────────────────────────────────────────────────────────────
 export default function App() {
   const [messages, setMessages] = useState<Message[]>([
-    { id: 'welcome', role: 'assistant', text: "Hi! I'm Dhi, your Second Brain. Ask me anything from your knowledge vault, or press Save to capture this page." }
+    { id: 'welcome', role: 'assistant', text: "Ask me anything from your knowledge vault." }
   ])
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<StatusState | null>(null)
@@ -138,7 +146,6 @@ export default function App() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const statusTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Load saved settings
   useEffect(() => {
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
       chrome.storage.local.get(['defaultFolder'], (r) => {
@@ -147,7 +154,6 @@ export default function App() {
     }
   }, [])
 
-  // Auto scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, isLoading])
@@ -160,22 +166,19 @@ export default function App() {
     }
   }, [])
 
-  // ── Save current page ──
   const handleSavePage = useCallback(async () => {
-    showStatusFor({ type: 'processing', message: '⏳ Capturing current page…' })
+    showStatusFor({ type: 'processing', message: 'Capturing page…' })
     try {
       const tabs = await new Promise<chrome.tabs.Tab[]>((res) =>
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, res)
       )
       const url = tabs[0]?.url
       if (!url || !url.startsWith('http')) {
-        showStatusFor({ type: 'error', message: 'Only http/https pages can be saved.' })
-        return
+        showStatusFor({ type: 'error', message: 'Only http/https pages can be saved.' }); return
       }
       const folder = saveFolder.trim().replace(/^\/|\/$/g, '') || undefined
       const body: Record<string, unknown> = { url, tags: ['extension-capture'] }
       if (folder) body.folder = folder
-
       const res = await fetch(`${API_BASE}/api/ingest`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -183,97 +186,89 @@ export default function App() {
       })
       const data = await res.json()
       if (data.status === 'success') {
-        showStatusFor({ type: 'success', message: '✓ Page saved! Indexing in background…' })
-        addMessage('assistant', `✓ Page captured and sent to your Second Brain${folder ? ` → vault/${folder}` : ''}. Indexing may take ~30s.`)
+        showStatusFor({ type: 'success', message: `Saved${folder ? ` → vault/${folder}` : ''}. Indexing…` })
+        addMessage('assistant', `Page captured. Indexing may take ~30s.`)
       } else {
         showStatusFor({ type: 'error', message: data.detail || 'Backend error' })
       }
-    } catch (e) {
+    } catch {
       showStatusFor({ type: 'error', message: 'Cannot reach backend — is Docker running?' })
     }
   }, [saveFolder, showStatusFor])
 
-  // ── Chat send ──
-  const handleSend = useCallback(async (message: string, _files?: File[]) => {
+  const handleSend = useCallback(async (message: string) => {
     if (!message.trim()) return
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', text: message }
-    setMessages((prev) => [...prev, userMsg])
+    setMessages((p) => [...p, { id: Date.now().toString(), role: 'user', text: message }])
     setIsLoading(true)
-    showStatusFor({ type: 'processing', message: '⏳ Searching your Second Brain…' })
-
+    showStatusFor({ type: 'processing', message: 'Searching your Second Brain…' })
     try {
       const res = await fetch(`${API_BASE}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: message, top_k: 5 }),
       })
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}))
-        throw new Error(err.detail || `HTTP ${res.status}`)
-      }
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || `HTTP ${res.status}`) }
       const data = await res.json()
-      setMessages((prev) => [...prev, {
-        id: Date.now().toString() + '_ai',
-        role: 'assistant',
-        text: data.answer,
-        sources: data.sources,
-        latency: data.latency_ms,
-      }])
+      setMessages((p) => [...p, { id: Date.now() + '_ai', role: 'assistant', text: data.answer, sources: data.sources, latency: data.latency_ms }])
       setStatus(null)
     } catch (e: unknown) {
-      const msg = e instanceof Error && e.message.includes('fetch') ? 'Cannot reach backend — is Docker running on port 8000?' : (e instanceof Error ? e.message : 'Unknown error')
-      setMessages((prev) => [...prev, { id: Date.now().toString() + '_err', role: 'assistant', text: `Error: ${msg}`, isError: true }])
+      const msg = e instanceof Error && e.message.includes('fetch') ? 'Cannot reach backend — is Docker running?' : (e instanceof Error ? e.message : 'Unknown error')
+      setMessages((p) => [...p, { id: Date.now() + '_err', role: 'assistant', text: msg, isError: true }])
       showStatusFor({ type: 'error', message: msg })
     } finally {
       setIsLoading(false)
     }
   }, [showStatusFor])
 
-  const addMessage = (role: 'user' | 'assistant', text: string) => {
-    setMessages((prev) => [...prev, { id: Date.now().toString(), role, text }])
-  }
+  const addMessage = (role: 'user' | 'assistant', text: string) =>
+    setMessages((p) => [...p, { id: Date.now().toString(), role, text }])
 
   const handleSaveSettings = () => {
     const folder = saveFolder.trim().replace(/^\/|\/$/g, '')
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
       chrome.storage.local.set({ defaultFolder: folder }, () => {
-        showStatusFor({ type: 'success', message: '✓ Settings saved' }, 2000)
+        showStatusFor({ type: 'success', message: 'Settings saved' }, 2000)
         setShowSettings(false)
       })
-    } else {
-      setShowSettings(false)
-    }
+    } else { setShowSettings(false) }
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#0D1117] overflow-hidden">
+    <div className="flex flex-col h-screen overflow-hidden">
+
       {/* ── Header ── */}
-      <header className="flex items-center justify-between px-4 py-3 bg-slate-900/80 backdrop-blur-sm border-b border-slate-700/60 flex-shrink-0">
+      <header className="flex items-center justify-between px-4 py-3 flex-shrink-0 border-b border-white/[0.05]"
+        style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(20px)' }}>
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center shadow-lg shadow-blue-900/40 ring-1 ring-white/10">
-            <Brain className="w-4 h-4 text-white" />
+          {/* Logo mark */}
+          <div className="w-6 h-6 rounded-lg bg-white/[0.05] border border-white/10 flex items-center justify-center">
+            <Brain className="w-3 h-3 text-white/50" />
           </div>
           <div>
-            <h1 className="text-sm font-semibold text-white leading-none">Dhi Brain</h1>
-            <p className="text-[10px] text-slate-500 leading-none mt-0.5">Second Brain AI</p>
+            <h1 className="text-[11px] font-light text-white/80 leading-none tracking-[0.08em] uppercase">Dhi Brain</h1>
+            <p className="text-[9px] text-white/20 leading-none mt-0.5 font-light tracking-widest">second brain ai</p>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+
+        <div className="flex items-center gap-1.5">
           <button
             onClick={handleSavePage}
             disabled={isLoading}
-            title="Save current page to Second Brain"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 text-blue-400 hover:text-blue-300 text-xs font-medium transition-all disabled:opacity-40"
+            title="Save current page"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] text-white/40 hover:text-white/70 text-[10px] font-light tracking-wide transition-all disabled:opacity-30"
           >
-            <Save className="w-3.5 h-3.5" />
+            <Save className="w-3 h-3" />
             Save
           </button>
           <button
             onClick={() => setShowSettings((p) => !p)}
-            title="Settings"
-            className={`p-2 rounded-xl transition-all ${showSettings ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800'}`}
+            className={`p-1.5 rounded-xl border transition-all ${
+              showSettings
+                ? 'bg-white/[0.08] border-white/20 text-white/70'
+                : 'border-transparent text-white/20 hover:text-white/50 hover:border-white/10'
+            }`}
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-3.5 h-3.5" />
           </button>
         </div>
       </header>
@@ -291,23 +286,23 @@ export default function App() {
       </AnimatePresence>
 
       {/* ── Messages ── */}
-      <main className="flex-1 overflow-y-auto chat-scroll px-4 py-4 flex flex-col gap-4">
+      <main className="flex-1 overflow-y-auto chat-scroll px-4 py-5 flex flex-col gap-4">
         <AnimatePresence initial={false}>
           {messages.map((msg) => <MessageBubble key={msg.id} msg={msg} />)}
         </AnimatePresence>
 
-        {/* Loading dots */}
+        {/* Loading indicator */}
         <AnimatePresence>
           {isLoading && (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-2">
-              <div className="w-6 h-6 rounded-full bg-blue-600/80 flex items-center justify-center flex-shrink-0 mt-1 ring-1 ring-blue-500/40">
-                <Brain className="w-3.5 h-3.5 text-white" />
+            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-2.5">
+              <div className="w-5 h-5 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Brain className="w-2.5 h-2.5 text-white/30" />
               </div>
-              <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-slate-800/80 border border-slate-700/50 flex items-center gap-1.5">
+              <div className="px-3 py-2 rounded-2xl rounded-bl-sm bg-white/[0.03] border border-white/[0.06] flex items-center gap-1.5">
                 {[0, 1, 2].map((i) => (
-                  <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-400"
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }} />
+                  <motion.div key={i} className="w-1 h-1 rounded-full bg-white/30"
+                    animate={{ opacity: [0.2, 0.8, 0.2] }}
+                    transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }} />
                 ))}
               </div>
             </motion.div>
@@ -316,13 +311,14 @@ export default function App() {
         <div ref={bottomRef} />
       </main>
 
-      {/* ── Prompt Input ── */}
-      <div className="flex-shrink-0 px-3 pb-3 pt-2 bg-slate-900/50 backdrop-blur-sm border-t border-slate-700/40">
+      {/* ── Prompt Box ── */}
+      <div className="flex-shrink-0 px-3 pb-3 pt-2 border-t border-white/[0.04]"
+        style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(20px)' }}>
         <PromptInputBox
           onSend={handleSend}
           isLoading={isLoading}
           placeholder="Ask your Second Brain…"
-          className="border-slate-700/60 bg-slate-900/90"
+          className="border-white/[0.08] bg-white/[0.02] shadow-none"
         />
       </div>
     </div>
