@@ -20,7 +20,7 @@ document.head.appendChild(styleSheet);
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> { className?: string; }
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => (
   <textarea
-    className={cn("flex w-full rounded-md border-none bg-transparent px-3 py-2 text-[12px] font-light text-white/75 placeholder:text-white/20 focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 min-h-[40px] resize-none tracking-wide leading-relaxed", className)}
+    className={cn("flex w-full rounded-md border-none bg-transparent px-3 py-2 text-[12px] font-light text-white/95 placeholder:text-white/45 focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 min-h-[40px] resize-none tracking-wide leading-relaxed", className)}
     ref={ref} rows={1} {...props} />
 ));
 Textarea.displayName = "Textarea";
@@ -167,7 +167,7 @@ const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
     return (
       <TooltipProvider>
         <PromptInputContext.Provider value={{ isLoading, value: value ?? internalValue, setValue: onValueChange ?? handleChange, maxHeight, onSubmit, disabled }}>
-          <div ref={ref} className={cn("rounded-2xl border border-white/[0.07] bg-black/40 p-2 transition-all duration-300 backdrop-blur-sm", isLoading && "border-white/20", className)} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
+          <div ref={ref} className={cn("rounded-3xl border border-white/25 bg-black/30 backdrop-blur-xl shadow-2xl p-2 transition-all duration-300", isLoading && "border-white/40", className)} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
             {children}
           </div>
         </PromptInputContext.Provider>
@@ -299,7 +299,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
   return (
     <>
       <PromptInput value={input} onValueChange={setInput} isLoading={isLoading} onSubmit={handleSubmit}
-        className={cn("w-full bg-[#1F2023] border-[#444444] shadow-[0_8px_30px_rgba(0,0,0,0.24)]", isRecording && "border-red-500/70", className)}
+        className={cn("w-full", isRecording && "border-white/30", className)}
         disabled={isLoading || isRecording} ref={ref || promptBoxRef} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
 
         {files.length > 0 && !isRecording && (
@@ -328,14 +328,14 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
         <PromptInputActions className="flex items-center justify-between gap-2 p-0 pt-2">
           <div className={cn("flex items-center gap-1 transition-opacity duration-300", isRecording ? "opacity-0 invisible h-0" : "opacity-100 visible")}>
             <PromptInputAction tooltip="Upload image">
-              <button onClick={() => uploadInputRef.current?.click()} className="flex h-7 w-7 text-white/25 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-white/5 hover:text-white/50" disabled={isRecording}>
+              <button onClick={() => uploadInputRef.current?.click()} className="flex h-7 w-7 text-white/55 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-white/10 hover:text-white/80" disabled={isRecording}>
                 <Paperclip className="h-5 w-5" />
                 <input ref={uploadInputRef} type="file" className="hidden" onChange={(e) => { if (e.target.files?.[0]) processFile(e.target.files[0]); if (e.target) e.target.value = ""; }} accept="image/*" />
               </button>
             </PromptInputAction>
 
             <div className="flex items-center">
-              <button type="button" onClick={() => handleToggleChange("search")} className={cn("rounded-full transition-all flex items-center gap-1 px-2 py-1 border h-7", showSearch ? "bg-white/10 border-white/30 text-white/80" : "bg-transparent border-transparent text-white/25 hover:text-white/50")}>
+              <button type="button" onClick={() => handleToggleChange("search")} className={cn("rounded-full transition-all flex items-center gap-1 px-2 py-1 border h-7", showSearch ? "bg-white/15 border-white/40 text-white/90" : "bg-transparent border-transparent text-white/55 hover:text-white/80")}>
                 <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                   <motion.div animate={{ rotate: showSearch ? 360 : 0, scale: showSearch ? 1.1 : 1 }} transition={{ type: "spring", stiffness: 260, damping: 25 }}>
                     <Globe className={cn("w-4 h-4", showSearch ? "text-[#1EAEDB]" : "text-inherit")} />
@@ -350,7 +350,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 
               <CustomDivider />
 
-              <button type="button" onClick={() => handleToggleChange("think")} className={cn("rounded-full transition-all flex items-center gap-1 px-2 py-1 border h-7", showThink ? "bg-white/10 border-white/30 text-white/80" : "bg-transparent border-transparent text-white/25 hover:text-white/50")}>
+              <button type="button" onClick={() => handleToggleChange("think")} className={cn("rounded-full transition-all flex items-center gap-1 px-2 py-1 border h-7", showThink ? "bg-white/15 border-white/40 text-white/90" : "bg-transparent border-transparent text-white/55 hover:text-white/80")}>
                 <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                   <motion.div animate={{ rotate: showThink ? 360 : 0, scale: showThink ? 1.1 : 1 }} transition={{ type: "spring", stiffness: 260, damping: 25 }}>
                     <BrainCog className={cn("w-4 h-4", showThink ? "text-[#8B5CF6]" : "text-inherit")} />
@@ -365,7 +365,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 
               <CustomDivider />
 
-              <button type="button" onClick={handleCanvasToggle} className={cn("rounded-full transition-all flex items-center gap-1 px-2 py-1 border h-7", showCanvas ? "bg-white/10 border-white/30 text-white/80" : "bg-transparent border-transparent text-white/25 hover:text-white/50")}>
+              <button type="button" onClick={handleCanvasToggle} className={cn("rounded-full transition-all flex items-center gap-1 px-2 py-1 border h-7", showCanvas ? "bg-white/15 border-white/40 text-white/90" : "bg-transparent border-transparent text-white/55 hover:text-white/80")}>
                 <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                   <motion.div animate={{ rotate: showCanvas ? 360 : 0, scale: showCanvas ? 1.1 : 1 }} transition={{ type: "spring", stiffness: 260, damping: 25 }}>
                     <FolderCode className={cn("w-4 h-4", showCanvas ? "text-[#F97316]" : "text-inherit")} />
@@ -382,7 +382,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 
           <PromptInputAction tooltip={isLoading ? "Stop generation" : isRecording ? "Stop recording" : hasContent ? "Send message" : "Voice message"}>
             <Button variant="default" size="icon"
-              className={cn("h-7 w-7 rounded-full transition-all duration-200", isRecording ? "bg-transparent hover:bg-white/5 text-white/40" : hasContent ? "bg-white hover:bg-white/90 text-black" : "bg-transparent hover:bg-white/5 text-white/25")}
+              className={cn("h-7 w-7 rounded-full transition-all duration-200", isRecording ? "bg-transparent hover:bg-white/10 text-white/60" : hasContent ? "bg-white hover:bg-white/90 text-black" : "bg-white/10 hover:bg-white/20 border border-white/20 text-white/70")}
               onClick={() => { if (isRecording) setIsRecording(false); else if (hasContent) handleSubmit(); else setIsRecording(true); }}
               disabled={isLoading && !hasContent}>
               {isLoading ? <Square className="h-3 w-3 fill-black animate-pulse" /> : isRecording ? <StopCircle className="h-3.5 w-3.5 text-white/40" /> : hasContent ? <ArrowUp className="h-3 w-3 text-black" /> : <Mic className="h-3.5 w-3.5 text-black" />}
