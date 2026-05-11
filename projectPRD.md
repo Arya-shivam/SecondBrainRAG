@@ -37,6 +37,20 @@ Version 2 adds an **Obsidian-style interactive graph** — a visual brain map of
 
 ---
 
+## Bot Identity (Dhi)
+
+**Dhi — Your Personal Deep Intelligence**
+
+**Meaning:**
+Dhi (धी) is an ancient Sanskrit word from the Vedas that represents higher intellect, visionary wisdom, and the power of insightful thought. It is the illuminating faculty of the mind that cuts through confusion, connects ideas, and reveals truth. In the famous Gayatri Mantra, Dhi is the very quality we pray to awaken.
+
+Just like a deep equivalent of Grok, Dhi is built to consume everything you feed it — your notes, thoughts, readings, and experiences — and transform them into clear, sharp, and profound understanding.
+
+It is not just memory.
+It is living intelligence.
+
+---
+
 ## Problem Statement
 
 Academic papers are hard to use in practice:
