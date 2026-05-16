@@ -20,6 +20,7 @@ from typing import Optional
 
 from src.db.opensearch import get_opensearch_client
 from src.rag.embedder import embed_text
+from langfuse.decorators import observe
 
 
 @dataclass
@@ -33,6 +34,7 @@ class RetrievedChunk:
     score: float
 
 
+@observe()
 async def retrieve(
     query: str,
     top_k: int = 5,

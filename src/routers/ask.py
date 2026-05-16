@@ -12,6 +12,7 @@ from pydantic import BaseModel
 
 from src.rag.retriever import retrieve
 from src.rag.generator import generate_answer
+from langfuse.decorators import observe
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -37,8 +38,8 @@ class AskResponse(BaseModel):
     sources: list[SourceDoc]
     latency_ms: int
 
-
 @router.post("/ask", response_model=AskResponse)
+@observe()
 async def ask(req: AskRequest):
     """
     Query your Second Brain.
