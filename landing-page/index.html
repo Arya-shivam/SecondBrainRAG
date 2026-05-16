@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhi Second Brain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'factory-black': '#020202',
+                        'factory-light-gray': '#eeeeee',
+                        'faded-silver': '#fafafa',
+                        'cool-gray': '#b8b3b0',
+                        'graphite': '#3d3a39',
+                        'ash-gray': '#a49d9a',
+                        'code-orange': '#ef6f2e',
+                    },
+                    fontFamily: {
+                        'serif-logo': ['"DM Serif Display"', 'serif'],
+                        'display-wide': ['"Space Grotesk"', 'sans-serif'],
+                        'mono': ['"JetBrains Mono"', 'monospace'],
+                        'body': ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+        body {
+            background-color: theme('colors.factory-black');
+            color: theme('colors.factory-light-gray');
+        }
+        
+        /* Subtle background texture */
+        .texture-bg {
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.2;
+            pointer-events: none;
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.factory-black');
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.graphite');
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="font-body antialiased min-h-screen flex flex-col relative">
+    
+    <div class="texture-bg"></div>
+
+    <!-- Main Wrapper to squeeze the body -->
+    <div class="max-w-[1200px] mx-auto w-full min-h-screen border-x border-graphite flex flex-col relative z-10 bg-factory-black shadow-2xl shadow-black">
+
+    <!-- Top Navigation -->
+    <nav class="w-full border-b border-graphite grid grid-cols-6 uppercase tracking-widest text-[9px] text-cool-gray relative z-10 font-mono">
+        <div class="col-span-1 border-r border-graphite p-3 px-6 flex items-center">
+            <h1 class="font-serif-logo text-xl normal-case text-factory-light-gray leading-none tracking-normal">
+                DHI<br>AGENT
+            </h1>
+        </div>
+        <div class="col-span-1 border-r border-graphite p-3 px-6 flex items-center hover:text-white cursor-pointer">
+            DOCS
+        </div>
+        <a href="setup.html" class="col-span-1 border-r border-graphite p-3 px-6 flex items-center hover:text-white cursor-pointer transition-colors">
+            TUTORIAL
+        </a>
+        <div class="col-span-2 border-r border-graphite p-3 px-6 flex items-center hover:text-white cursor-pointer">
+            <a href="https://github.com/Arya-shivam/SecondBrainRAG" target="_blank" class="flex items-center gap-3 hover:text-white transition-colors w-full">
+                SOCIALS &nbsp;&nbsp;&nbsp;
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+        </div>
+        <div class="col-span-1 p-3 px-6 flex items-center justify-between">
+            <span>THEME</span>
+            <div class="w-6 h-3 rounded-full border border-graphite flex items-center px-[1px]">
+                <div class="w-2 h-2 rounded-full bg-factory-light-gray"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Hero Content -->
+    <main class="flex-1 flex flex-col items-center justify-center text-center px-4 py-8 relative z-10">
+        
+        <p class="uppercase tracking-[0.2em] text-[8px] text-cool-gray font-mono mb-3 font-light">
+            OPEN SOURCE &bull; MIT LICENSE &bull; RUNS LOCAL
+        </p>
+
+        <h2 class="font-display-wide text-3xl md:text-[3rem] font-bold tracking-[0.1em] mb-4 leading-[1.1] max-w-3xl text-factory-light-gray transform scale-x-110">
+            DHI &mdash; YOUR LIVING<br>SECOND BRAIN.
+        </h2>
+
+        <p class="font-serif text-[11px] md:text-xs text-cool-gray max-w-lg mb-8 leading-relaxed font-light opacity-90">
+            Dhi (&#x927;&#x940;) is Sanskrit for higher intellect. Send it a YouTube link, a PDF, or a raw thought via Telegram &mdash; it ingests, chunks, embeds, and links everything into your Obsidian vault. Then ask anything in natural language.
+        </p>
+
+        <div class="w-full max-w-lg text-left space-y-3 font-mono text-[9px]">
+            <!-- Step 1 -->
+            <div>
+                <div class="flex justify-between items-end mb-1 uppercase tracking-widest text-cool-gray">
+                    <span>1. PULL &amp; START</span>
+                    <button class="hover:text-white transition-colors cursor-pointer" onclick="navigator.clipboard.writeText('curl -O https://raw.githubusercontent.com/Arya-shivam/SecondBrainRAG/master/docker-compose.yml && docker compose up -d')">COPY</button>
+                </div>
+                <div class="bg-[#040404] border border-graphite p-2 flex items-center overflow-x-auto">
+                    <code class="text-code-orange whitespace-nowrap font-light">
+                        curl -O https://raw.githubusercontent.com/Arya-shivam/SecondBrainRAG/master/docker-compose.yml &amp;&amp; docker compose up -d
+                    </code>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div>
+                <div class="flex justify-between items-end mb-1 uppercase tracking-widest text-cool-gray">
+                    <span>2. SET VAULT PATH &amp; TELEGRAM TOKEN</span>
+                    <a href="setup.html" class="hover:text-white transition-colors cursor-pointer">GUIDE &nearr;</a>
+                </div>
+                <div class="bg-[#040404] border border-graphite p-2 flex items-center">
+                    <code class="text-code-orange font-light">
+                        Edit .env &rarr; set OBSIDIAN_VAULT_PATH &amp; TELEGRAM_BOT_TOKEN
+                    </code>
+                </div>
+            </div>
+            
+            <p class="text-center uppercase tracking-[0.2em] text-[8px] text-graphite mt-4 font-bold">
+                REQUIRES DOCKER DESKTOP &bull; RUNS FULLY LOCAL &bull; ZERO CLOUD
+            </p>
+        </div>
+    </main>
+
+    <!-- See It In Action -->
+    <section class="border-t border-graphite relative z-10">
+        <div class="p-2 px-6 border-b border-graphite">
+            <h3 class="font-display-wide tracking-widest uppercase text-[10px] text-factory-light-gray font-bold">SEE IT IN ACTION</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 h-[260px]">
+            <!-- Terminal Panel -->
+            <div class="p-4 border-r border-graphite">
+                <div class="border border-graphite p-3 bg-[#080808] font-mono text-[8px] text-cool-gray h-full flex flex-col font-light">
+                    <div class="flex gap-1.5 mb-3 border-b border-graphite pb-2">
+                        <div class="w-1.5 h-1.5 rounded-full bg-graphite"></div>
+                        <div class="w-1.5 h-1.5 rounded-full bg-graphite"></div>
+                        <div class="w-1.5 h-1.5 rounded-full bg-graphite"></div>
+                        <span class="ml-1 text-graphite tracking-widest">DHI_TERMINAL</span>
+                    </div>
+                    <p class="terminal-line opacity-0 transition-opacity duration-100 mb-2 text-factory-light-gray"><span class="text-code-orange">&rsaquo;</span> ingest https://youtu.be/dQw4w9WgXcQ</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">yt_transcript_fetch</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">chunk_and_embed</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">opensearch_index</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">obsidian_write_md</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">inject_wikilinks</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">1.2s</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">0.8s</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">0.3s</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">0.1s</p>
+                            <p class="terminal-line opacity-0 transition-opacity duration-100 text-cool-gray">0.2s</p>
+                        </div>
+                    </div>
+                    <p class="terminal-line opacity-0 transition-opacity duration-100 mt-auto text-factory-light-gray">Ready. <span class="animate-pulse">_</span></p>
+                </div>
+            </div>
+            <!-- ASCII Brain Panel -->
+            <div class="p-4 bg-[#040404] relative overflow-hidden flex flex-col items-end justify-end h-full">
+                <!-- ASCII Brain Art -->
+                <pre class="font-mono text-[3px] md:text-[4px] leading-[3px] md:leading-[4px] text-inherit whitespace-pre absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0 select-none pointer-events-none opacity-40">
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+████████████████████████████████████████████████████████████████████████████████▓▓██▒▒░░░░░░░░░░░░░░░░░░▒▒▒▒▓▓██████████████████████████████████████████████████████████████
+██████████████████████████████████████████████████████████████████████████▒▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▓▓████████████████████████████████████████████████████████
+████████████████████████████████████████████████████████████████████▒▒░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░▓▓████████████████████████████████████████████████████
+████████████████████████████████████████████████████████████████░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒░░░░██████████████████████████████████████████████████
+████████████████████████████████████████████████████████████▒▒░░▒▒▒▒▒▒▒▒▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒░░▓▓██████████████████████████████████████████████
+████████████████████████████████████████████████████████▓▓░░▒▒▒▒▒▒▒▒▓▓▒▒▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░▒▒▒▒▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒░░▓▓████████████████████████████████████████████
+██████████████████████████████████████████████████████▒▒░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓░░░░░░░░    ░░░░░░░░░░░░    ░░░░░░░░░░▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░████████████████████████████████████████████
+████████████████████████████████████████████████████░░░░▒▒▒▒▒▒▒▒▓▓▓▓▓▓▒▒░░░░░░░░      ░░░░░░░░░░░░  ░░░░░░░░░░░░░░▒▒▓▓▓▓▓▓▓▓▒▒▒▒░░██████████████████████████████████████████
+██████████████████████████████████████████████████▒▒░░▒▒▒▒▒▒▓▓▓▓▓▓░░░░░░░░░░▒▒░░░░      ░░░░░░░░░░      ░░░░░░░░░░░░░░░░▓▓▓▓▒▒▒▒▒▒░░████████████████████████████████████████
+████████████████████████████████████████████████▓▓░░▒▒▒▒▓▓▓▓▓▓▒▒░░░░░░░░▒▒▒▒▒▒▒▒░░░░░░  ░░▒▒▒▒░░░░      ░░▒▒░░▒▒▒▒░░░░░░░░▓▓▒▒▒▒▒▒░░▒▒██████████████████████████████████████
+████████████████████████████████████████████████░░░░▒▒▓▓▓▓▓▓▓▓  ░░░░░░▒▒▒▒▒▒▓▓▒▒░░▒▒░░░░▒▒▓▓░░░░░░░░░░░░░░▒▒░░▒▒▓▓▒▒░░░░░░░░▒▒▒▒▒▒▒▒░░██████████████████████████████████████
+██████████████████████████████████████████████░░░░▒▒▓▓▓▓▓▓▒▒░░░░░░░░░░░░░░░░▒▒░░▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▒▒░░▒▒▒▒░░▓▓▒▒░░░░░░░░░░      ▒▒▒▒▒▒▒▒▒▒████████████████████████████████████
+██████████████████████████████████████████████░░▒▒▓▓▓▓▓▓▒▒░░▒▒▒▒▒▒░░      ░░░░▒▒▒▒░░▒▒▓▓░░▒▒▓▓▓▓▒▒░░▒▒░░░░▒▒▓▓▓▓▒▒▒▒▒▒░░      ░░▒▒▒▒▒▒░░████████████████████████████████████
+████████████████████████████████████████████░░░░▒▒▒▒▓▓▓▓░░▓▓▓▓░░░░░░░░░░░░░░▒▒▒▒░░▒▒▒▒▒▒░░▒▒░░▒▒▒▒░░░░░░░░░░░░▒▒▒▒░░░░░░        ▒▒▒▒▒▒░░▓▓██████████████████████████████████
+████████████████████████████████████████████░░▒▒▒▒▓▓▒▒░░░░▓▓░░▒▒▒▒▒▒▒▒░░  ░░░░  ░░▒▒▒▒░░▒▒▓▓▒▒░░░░    ░░░░░░░░░░░░▒▒▒▒░░░░  ░░  ░░▒▒▒▒▒▒░░██████████████████████████████████
+██████████████████████████████████████████░░░░▒▒▓▓▓▓░░░░░░▒▒▒▒▓▓▒▒▒▒▒▒░░▒▒▒▒░░  ░░░░░░▒▒▓▓▒▒▒▒░░  ░░      ░░░░░░▒▒▓▓▓▓▒▒░░░░▒▒░░▒▒░░▒▒▒▒░░██████████████████████████████████
+██████████████████████████████████████████  ▒▒▒▒▓▓▒▒░░░░░░░░▓▓▓▓▒▒░░░░░░▒▒░░        ░░▒▒▒▒░░░░░░▒▒░░░░░░░░░░░░▒▒░░░░▒▒▓▓▒▒░░▒▒▒▒░░░░▓▓▒▒░░██████████████████████████████████
+██████████████████████████████████████████░░▒▒▓▓▓▓░░░░░░░░▒▒▓▓▒▒░░░░░░░░░░░░▒▒░░    ░░░░▒▒▒▒▒▒░░▒▒░░░░░░░░░░░░░░▒▒▒▒▒▒▒▒▓▓░░░░▒▒░░░░▒▒▒▒░░██████████████████████████████████
+████████████████████████████████████████▓▓░░▒▒▓▓▓▓▒▒      ░░▒▒░░░░▒▒░░▒▒▒▒▒▒▒▒░░  ░░  ░░▓▓▒▒░░▒▒▓▓░░▒▒▒▒▒▒░░░░▒▒▓▓▒▒▓▓░░▒▒▓▓░░▒▒▒▒▒▒░░▒▒▒▒▒▒████████████████████████████████
+██████████████████████████████████████████░░▒▒▓▓▓▓░░      ░░▒▒░░▒▒░░░░░░▒▒▒▒░░░░  ░░░░▒▒▓▓▒▒░░▓▓▓▓▒▒▒▒▓▓▓▓▓▓▓▓▒▒░░▓▓▓▓▓▓▒▒▓▓▒▒░░░░▒▒░░▒▒▒▒▒▒████████████████████████████████
+████████████████████████████████████████▒▒░░▒▒▓▓▓▓░░      ░░▒▒▒▒▒▒░░      ░░▒▒▒▒░░░░▒▒▓▓▓▓▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒██▒▒▓▓▒▒▒▒▒▒▒▒░░░░▒▒▒▒▒▒▒▒████████████████████████████████
+████████████████████████████████████████░░░░▒▒▓▓▓▓    ░░░░▒▒▒▒▒▒▒▒░░░░    ░░▒▒▒▒▒▒░░▓▓▓▓▓▓▒▒▒▒▓▓▒▒▓▓▒▒▓▓▓▓▒▒  ▒▒▓▓▒▒██▓▓▒▒▒▒▒▒░░▒▒░░░░▒▒▒▒▒▒████████████████████████████████
+██████████████████████████████████████████░░▒▒▓▓▓▓░░░░▓▓░░▓▓░░▓▓░░▒▒░░▒▒░░▒▒▒▒▒▒▒▒░░▓▓░░▒▒▒▒░░▒▒░░▒▒▒▒░░░░░░▒▒▓▓▓▓▒▒▓▓▓▓▒▒░░▒▒░░      ▒▒░░▒▒████████████████████████████████
+████████████████████████████████████████▒▒░░▒▒▓▓▓▓░░▒▒▓▓▒▒▓▓▒▒▒▒▒▒░░▒▒▒▒▒▒▒▒▓▓░░░░▒▒▓▓░░░░▒▒░░        ░░░░▓▓▓▓▒▒▓▓▒▒▒▒▓▓▒▒░░▒▒░░      ▒▒░░▒▒████████████████████████████████
+████████████████████████████████████████▒▒░░▒▒▓▓▓▓░░░░▒▒▒▒▒▒▓▓▒▒▓▓░░▒▒▒▒▒▒▒▒▒▒▒▒  ░░░░░░░░        ░░▒▒▓▓▓▓▒▒▒▒▒▒▓▓▒▒▒▒▓▓▒▒░░░░        ░░░░▒▒████████████████████████████████
+████████████████████████████████████████░░▒▒▓▓▓▓▓▓░░░░▒▒▓▓▒▒▓▓▒▒▓▓▒▒▒▒▓▓▒▒▒▒░░░░    ░░░░░░▒▒▒▒░░░░▒▒▒▒▒▒▒▒▒▒░░▓▓▓▓▓▓░░▒▒░░░░░░        ▒▒░░██████████████████████████████████
+████████████████████████████████████████░░▒▒▓▓▓▓▓▓▓▓░░░░▒▒▒▒▒▒▒▒▓▓▓▓░░▒▒▒▒░░        ░░▓▓▒▒▒▒▒▒▒▒░░░░░░░░░░░░▓▓▓▓▓▓▒▒░░░░    ░░░░░░░░░░▒▒░░▓▓████████████████████████████████
+████████████████████████████████████████░░▒▒▓▓▓▓▓▓▓▓░░▒▒░░░░▒▒▓▓▓▓▓▓▓▓░░░░      ░░░░▒▒▓▓▓▓▒▒░░░░░░    ░░░░▓▓▓▓▒▒▒▒▒▒░░        ░░░░░░▒▒▒▒░░██████████████████████████████████
+██████████████████████████████████████▓▓▒▒▓▓▓▓▓▓▓▓▓▓██░░░░▒▒▒▒▒▒▒▒▒▒▓▓▓▓▒▒  ░░▒▒▒▒░░▒▒▒▒░░░░▒▒░░░░░░░░▒▒▓▓▓▓▒▒░░▓▓░░▓▓░░░░░░░░▒▒░░▓▓▒▒▒▒░░██████████████████████████████████
+██████████████████████████████████████▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓██▒▒▒▒░░▒▒▒▒░░▒▒░░░░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▓▓▓▓▓▓░░▓▓▒▒▒▒░░▒▒▒▒░░░░▓▓▓▓▒▒▒▒░░██████████████████████████████████
+████████████████████████████████████████▒▒▓▓▓▓▓▓▓▓██████▓▓████▓▓▓▓████▓▓▓▓░░▒▒░░▒▒▓▓▓▓▓▓▒▒▒▒▒▒▒▒░░░░░░░░░░░░▒▒▒▒▓▓░░░░░░▒▒▒▒░░▓▓▓▓▓▓▒▒▒▒▒▒██████████████████████████████████
+████████████████████████████████████████░░▓▓▓▓▓▓▓▓██████████████▓▓████████░░▒▒░░░░░░░░░░    ░░░░▒▒▓▓▓▓▓▓▓▓▒▒▓▓▒▒░░░░░░░░░░▒▒▓▓▓▓▓▓▓▓▒▒▒▒▓▓██████████████████████████████████
+██████████████████████████████████████████▒▒▓▓▓▓▓▓██████████████████████████▒▒░░▒▒▒▒▓▓▒▒░░    ▒▒▒▒▓▓▓▓▓▓▒▒▒▒░░▒▒██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░████████████████████████████████████
+████████████████████████████████████████▓▓▓▓▒▒▓▓▓▓▓▓██████████████████████████▓▓▒▒░░░░░░░░    ░░░░░░░░░░▓▓▓▓████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░████████████████████████████████████
+████████████████████████████████████████▒▒▓▓▓▓▒▒▓▓▓▓▓▓▓▓████████████████████████████▒▒░░        ▒▒▓▓██████▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▓▓████████████████████████████████████
+████████████████████████████████████████▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓████████████████████████████▓▓▓▓▒▒▒▒▒▒▓▓▓▓▓▓▓▓██████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░██████████████████████████████████████
+██████████████████████████████████████▒▒▓▓▓▓▓▓▒▒▒▒▒▒▒▒▓▓▓▓▓▓██████████████████████████▓▓▒▒▒▒▓▓████████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒██████████████████████████████████████
+██████████████████████████████████████▓▓▓▓▓▓▓▓▒▒▒▒▓▓▒▒▓▓▓▓▓▓▓▓████████████████████████▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓██████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒████████████████████████████████████████
+██████████████████████████████████████▓▓▓▓▓▓██▒▒░░▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████████████▓▓▓▓▒▒▓▓▓▓██████▒▒████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒████████████████████████████████████████
+██████████████████████████████████████▒▒▓▓▓▓████░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓██████████████████████▓▓▒▒▓▓▓▓▓▓▓▓██████▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒██████████████████████████████████████████
+██████████████████████████████████████████▓▓▓▓██░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████▓▓▓▓▓▓▓▓████▓▓▓▓████▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░██████████████████████████████████████████
+██████████████████████████████████████████████▒▒░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████▓▓▓▓██▓▓██▓▓▓▓▓▓▓▓████▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░██████████████████████████████████████████
+██████████████████████████████████████████████░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████▓▓██▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░██████████████████████████████████████████
+██████████████████████████████████████████████░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████████▓▓▓▓██▒▒██░░▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒████████████████████████████████████████
+██████████████████████████████████████████████░░▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████▓▓▓▓▓▓▓▓▒▒░░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░████████████████████████████████████████
+██████████████████████████████████████████████▒▒▓▓░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████████▓▓████▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░████████████████████████████████████████
+████████████████████████████████████████████████▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████▓▓▓▓▓▓▓▓████▓▓▒▒██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒░░██████████████████████████████████████
+████████████████████████████████████████████████▒▒▓▓░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████▓▓▓▓▒▒██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▓▓████████████████████████████████████
+██████████████████████████████████████████████████▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒░░████████████████████████████████████
+████████████████████████████████████████████████████▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░▒▒██████████████████████████████████
+████████████████████████████████████████████████████░░▓▓▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░░░██████████████████████████████████
+████████████████████████████████████████████████████░░░░▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░░░░░░░██████████████████████████████████
+████████████████████████████████████████████████████▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒░░▒▒░░░░████████████████████████████████
+████████████████████████████████████████████████████▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒▒▒░░░░██████████████████████████████
+██████████████████████████████████████████████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒▒▒▒▒░░▒▒████████████████████████████
+████████████████████████████████████████████████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████▓▓▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒▒▒▒▒░░▓▓██████████████████████████
+██████████████████████████████████████████████████████████████▓▓▓▓▒▒▒▒▒▒░░▒▒▒▒░░░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████▓▓▓▓▓▓▓▓▓▓▒▒░░▒▒▒▒▒▒░░░░██████████████████████████
+██████████████████████████████████████████████████████████████████████████████░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████▓▓▓▓▓▓▓▓▓▓░░░░▒▒▒▒▒▒░░▓▓████████████████████████
+████████████████████████████████████████████████████████████████████████████▒▒  ░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████████▓▓▓▓▓▓▓▓▒▒░░░░▒▒▒▒░░░░████████████████████████
+██████████████████████████████████████████████████████████████████████████▓▓    ░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████████████████████▓▓▓▓▓▓▓▓▒▒░░░░▒▒░░░░▓▓██████████████████████
+██████████████████████████████████████████████████████████████████████████    ░░░░░░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████████████████████████▓▓▓▓▓▓▓▓▒▒▒▒░░░░▒▒░░░░██████████████████████
+                </pre>
+                <div class="absolute inset-0 bg-gradient-to-t from-factory-black via-transparent to-transparent z-0"></div>
+                <h3 class="font-display-wide font-bold text-[10px] text-[#8fb08d] relative z-10 uppercase tracking-widest mt-auto">DHI AGENT</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="border-t border-graphite relative z-10 bg-factory-black">
+        <div class="p-2 px-6 border-b border-graphite">
+            <h3 class="font-display-wide tracking-widest uppercase text-[10px] text-factory-light-gray font-bold">FEATURES</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+            <!-- Row 1 -->
+            <div class="p-4 md:p-5 border-b md:border-b border-graphite md:border-r">
+                <h4 class="font-serif font-bold text-[10px] uppercase tracking-wider text-factory-light-gray mb-1">UNIVERSAL INGESTION</h4>
+                <p class="font-serif text-[9px] text-cool-gray leading-snug font-light">
+                    YouTube transcripts, PDFs, web articles, Word docs &mdash; one pipeline handles them all. Send a URL via Telegram or Chrome extension and Dhi does the rest.
+                </p>
+            </div>
+            <div class="p-4 md:p-5 border-b md:border-b border-graphite md:border-r">
+                <h4 class="font-serif font-bold text-[10px] uppercase tracking-wider text-factory-light-gray mb-1">OBSIDIAN-NATIVE VAULT</h4>
+                <p class="font-serif text-[9px] text-cool-gray leading-snug font-light">
+                    Every ingested item becomes a Markdown note in your Obsidian vault with auto-injected Wikilinks connecting related ideas across your knowledge graph.
+                </p>
+            </div>
+            <div class="p-4 md:p-5 border-b border-graphite">
+                <h4 class="font-serif font-bold text-[10px] uppercase tracking-wider text-factory-light-gray mb-1">TELEGRAM BOT (DHI)</h4>
+                <p class="font-serif text-[9px] text-cool-gray leading-snug font-light">
+                    Forward any link or thought to @DhiBot from your phone. It ingests the content and confirms back when done. Your brain, in your pocket.
+                </p>
+            </div>
+            <!-- Row 2 -->
+            <div class="p-4 md:p-5 border-b md:border-b-0 border-graphite md:border-r">
+                <h4 class="font-serif font-bold text-[10px] uppercase tracking-wider text-factory-light-gray mb-1">HYBRID SEARCH</h4>
+                <p class="font-serif text-[9px] text-cool-gray leading-snug font-light">
+                    BM25 + 768d vector search on OpenSearch, fused via RRF. Exact keyword matches plus semantic similarity &mdash; in one query against your entire knowledge base.
+                </p>
+            </div>
+            <div class="p-4 md:p-5 border-b md:border-b-0 border-graphite md:border-r">
+                <h4 class="font-serif font-bold text-[10px] uppercase tracking-wider text-factory-light-gray mb-1">CHROME EXTENSION</h4>
+                <p class="font-serif text-[9px] text-cool-gray leading-snug font-light">
+                    One-click capture from any browser tab. Desktop notifications confirm ingestion. Saves web articles and YouTube videos instantly to the pipeline.
+                </p>
+            </div>
+            <div class="p-4 md:p-5 border-b-0 border-graphite">
+                <h4 class="font-serif font-bold text-[10px] uppercase tracking-wider text-factory-light-gray mb-1">GROUNDED ANSWERS</h4>
+                <p class="font-serif text-[9px] text-cool-gray leading-snug font-light">
+                    Ask anything via <code class="text-code-orange text-[8px]">/ask</code>. Llama 3.1 answers using only your ingested notes, citing the exact source. No hallucination, no guessing.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-graphite text-[9px] tracking-widest text-cool-gray uppercase font-mono mt-auto relative z-10 bg-factory-black font-light">
+        <div class="p-3 px-6 border-b border-graphite flex justify-between items-center cursor-pointer hover:text-white transition-colors">
+            <span>MORE DETAILS</span>
+            <span>v</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-6 text-center md:text-left">
+            <div class="col-span-2 p-3 px-6 border-b md:border-b-0 border-graphite md:border-r">
+                DHI (&#x927;&#x940;) v1.0.0
+            </div>
+            <div class="col-span-2 p-3 px-6 border-b md:border-b-0 border-graphite md:border-r md:text-center">
+                <a href="https://github.com/Arya-shivam" target="_blank" class="hover:text-white transition-colors">ARYA SHIVAM &nearr;</a>
+            </div>
+            <div class="col-span-2 p-3 px-6 text-center md:text-right opacity-80">
+                MIT LICENSE · 2026
+            </div>
+        </div>
+    </footer>
+
+    </div> <!-- End Main Wrapper -->
+
+    <!-- Terminal Animation Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const lines = document.querySelectorAll('.terminal-line');
+            // Delays for each line to appear
+            const delays = [500, 1500, 1600, 1700, 1800, 1900, 3600, 4000, 4100, 7300, 7600, 8500, 9500];
+            
+            function animateTerminal() {
+                // Hide all lines
+                lines.forEach(line => line.classList.add('opacity-0'));
+                
+                // Sequentially reveal them
+                lines.forEach((line, index) => {
+                    setTimeout(() => {
+                        line.classList.remove('opacity-0');
+                    }, delays[index] || (index * 1000));
+                });
+                
+                // Restart animation loop after 9 seconds
+                setTimeout(animateTerminal, 9000);
+            }
+            
+            animateTerminal();
+        });
+    </script>
+</body>
+</html>
