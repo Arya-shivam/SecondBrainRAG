@@ -10,10 +10,10 @@ It is a frictionless, localized Second Brain. Instead of manually organizing not
 
 Dhi runs on a containerized, local-first stack, orchestrated by Docker Compose and `uv`.
 
-1. **Ingestion Layer (Frictionless Capture):**
-   - **Interfaces:** A Telegram Bot (for mobile) and a Chrome Extension (for desktop). The Telegram Bot runs automatically inside the `docker-compose` environment and long-polls for any URLs sent while offline.
-   - **Processing:** A FastAPI backend uses `BackgroundTasks` to parse YouTube transcripts (`youtube-transcript-api`), PDFs (`pymupdf`), and web articles (`trafilatura`) without blocking the UI.
-   - **Storage:** Parsed text is saved directly to your local file system as Markdown inside an Obsidian vault.
+1. **Ingestion Layer (Dual-Strategy Capture):**
+   - **Real-Time (FastAPI):** A Telegram Bot (for mobile) and a Chrome Extension (for desktop). The Telegram Bot runs automatically inside the `docker-compose` environment and long-polls for any URLs sent while offline. A FastAPI backend uses `BackgroundTasks` to instantly parse YouTube transcripts (`youtube-transcript-api`), PDFs (`pymupdf`), and web articles (`trafilatura`) without blocking the UI, returning an immediate 200 OK before processing in a background thread.
+   - **Batch Synchronization (Airflow):** Apache Airflow acts as a scheduled background sweeper. It runs an hourly DAG (`obsidian_vault_sync`) that scans the Obsidian vault for any manually created Markdown files. If it finds files with the frontmatter `ingested: false`, it batches them, chunks them, embeds them into the vector database to avoid API rate limits, and finally rewrites the markdown file to `ingested: true`.
+   - **Storage:** All parsed text is saved directly to your local file system as Markdown inside an Obsidian vault.
 2. **Indexing & Retrieval Layer (Hybrid Search):**
    - **Vector Database:** Local OpenSearch instance.
    - **Embeddings:** Text chunks are embedded via OpenRouter using lightweight models (e.g., `llama-nemotron-embed`).
