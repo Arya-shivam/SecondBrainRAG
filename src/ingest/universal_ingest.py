@@ -13,13 +13,25 @@ from . import yt_fetcher
 from src.rag.chunker import chunk_markdown
 from src.rag.embedder import embed_texts
 from src.db.opensearch import index_chunk, get_opensearch_client
+from src.obsidian.linker import build_link_index, linkify
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
-# Configurable vault path, defaulting to ./data/obsidian
-DEFAULT_VAULT_PATH = Path("data/obsidian").resolve()
+# ── Vault path ────────────────────────────────────────────────────────────────
+# Defaults to C:\Second Brain (real Obsidian vault).
+# Override with OBSIDIAN_VAULT_PATH env var if needed.
+DEFAULT_VAULT_PATH = Path(r"C:\Second Brain")
 VAULT = Path(os.getenv("OBSIDIAN_VAULT_PATH", DEFAULT_VAULT_PATH))
+
+# ── Folder mapping (mirrors real Obsidian vault structure) ────────────────────
+FOLDER_ARTICLES  = "2-Source Materials"
+FOLDER_YOUTUBE   = "2-Source Materials/Videos(YT)"
+FOLDER_BOOKS     = "2-Source Materials/Books"
+FOLDER_DOCS      = "2-Source Materials"
+FOLDER_NOTES     = "6- Zettelkasten ( Main notes )"
+FOLDER_ROUGH     = "1-Rough Notes"
 
 def ingest(source: str, tags: list[str] = None, folder: str = None) -> Path:
     """
@@ -71,9 +83,9 @@ def _write_vault(folder: str, title: str, text: str,
 
     frontmatter_lines = [f"{k}: {v}" for k, v in meta.items()]
     frontmatter = "\n".join(frontmatter_lines) + ("\n" if frontmatter_lines else "")
-    
+
     tags_str = ", ".join(tags)
-    content = f"""---
+    raw_content = f"""---
 source_type: {folder}
 title: "{title}"
 date: {date}
@@ -85,6 +97,16 @@ ingested: true
 
 {text}
 """
+
+    # ── Inject [[wikilinks]] before saving ────────────────────────────────────
+    try:
+        link_index = build_link_index(VAULT)
+        content = linkify(raw_content, title, link_index)
+        logger.info(f"Wikilinks injected into '{title}' ({len(link_index)} notes indexed).")
+    except Exception as e:
+        logger.warning(f"Wikilink injection failed (saving without links): {e}")
+        content = raw_content
+
     filepath.write_text(content, encoding="utf-8")
     logger.info(f"Saved → {filepath.name} to {out_dir}")
     
@@ -115,11 +137,14 @@ def index_markdown_file(filepath: Path):
     chunks = chunk_markdown(content)
     logger.info(f"Split {filepath.name} into {len(chunks)} chunks.")
 
-    client = get_opensearch_client()
-
-    # Ensure index exists with correct mapping before writing
-    from src.db.opensearch import init_opensearch
-    init_opensearch(client)
+    try:
+        client = get_opensearch_client()
+        # Ensure index exists with correct mapping before writing
+        from src.db.opensearch import init_opensearch
+        init_opensearch(client)
+    except Exception as e:
+        logger.warning(f"OpenSearch unavailable (skipping vector indexing): {e}")
+        return
 
     import asyncio
 
@@ -182,7 +207,7 @@ def _ingest_url(url: str, date: str, tags: list, folder: str = None) -> Path:
     # Use first line as title, fallback to URL
     lines = [line.strip() for line in text.split("\n") if line.strip()]
     title = lines[0][:80] if lines else url
-    return _write_vault(folder or "articles", title, text, date,
+    return _write_vault(folder or FOLDER_ARTICLES, title, text, date,
                          ["article"] + tags, {"url": url})
 
 
@@ -190,20 +215,20 @@ def _ingest_pdf(path: Path, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Extracting PDF: {path}")
     doc = fitz.open(path)
     text = "\n".join(page.get_text() for page in doc)
-    return _write_vault(folder or "pdfs", path.stem, text, date, ["pdf"] + tags)
+    return _write_vault(folder or FOLDER_BOOKS, path.stem, text, date, ["pdf"] + tags)
 
 
 def _ingest_docx(path: Path, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Extracting DOCX: {path}")
     doc = Document(path)
     text = "\n".join(p.text for p in doc.paragraphs if p.text.strip())
-    return _write_vault(folder or "docs", path.stem, text, date, ["doc"] + tags)
+    return _write_vault(folder or FOLDER_DOCS, path.stem, text, date, ["doc"] + tags)
 
 
 def _ingest_text(path: Path, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Copying Text/MD: {path}")
     text = path.read_text(encoding="utf-8")
-    return _write_vault(folder or "journal", path.stem, text, date, ["journal"] + tags)
+    return _write_vault(folder or FOLDER_ROUGH, path.stem, text, date, ["journal"] + tags)
 
 def _ingest_youtube(url: str, date: str, tags: list, folder: str = None) -> Path:
     logger.info(f"Fetching YouTube transcript: {url}")
@@ -220,7 +245,7 @@ def _ingest_youtube(url: str, date: str, tags: list, folder: str = None) -> Path
     
     text = f"**Source:** [YouTube]({transcript_obj.url})  \n**Channel:** {transcript_obj.channel or 'Unknown'}\n\n## Transcript\n\n{transcript_obj.transcript}"
     
-    return _write_vault(folder or "youtube", transcript_obj.title, text, date, ["youtube"] + tags, meta)
+    return _write_vault(folder or FOLDER_YOUTUBE, transcript_obj.title, text, date, ["youtube"] + tags, meta)
 
 def main():
     parser = argparse.ArgumentParser(description="Universal Data Ingestion to Obsidian Vault")
