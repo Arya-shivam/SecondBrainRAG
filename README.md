@@ -1,6 +1,6 @@
 # Dhi: A Personal RAG Second Brain
 
-> Inspired by Andrej Karpathy's concept of an "LLM OS" and the idea of a deeply integrated personal knowledge wiki. 
+> Inspired by Andrej Karpathy's concept of an "LLM Wiki" and the idea of a deeply integrated personal knowledge wiki. 
 
 If you are an individual diving deep into AI, constantly consuming research papers, YouTube tech talks, and long-form articles, you know the struggle: hoarding tabs and saving links to the void. **Dhi** is designed to fix that. 
 
