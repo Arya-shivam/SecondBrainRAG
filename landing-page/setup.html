@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhi — Setup Guide</title>
+    <meta name="description" content="Step-by-step setup guide for Dhi — your personal local RAG Second Brain.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'factory-black': '#020202',
+                        'factory-light-gray': '#eeeeee',
+                        'cool-gray': '#b8b3b0',
+                        'graphite': '#3d3a39',
+                        'code-orange': '#ef6f2e',
+                    },
+                    fontFamily: {
+                        'serif-logo': ['"DM Serif Display"', 'serif'],
+                        'display-wide': ['"Space Grotesk"', 'sans-serif'],
+                        'mono': ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #020202; color: #eeeeee; font-family: 'JetBrains Mono', monospace; }
+        .code-block { background: #040404; border: 1px solid #3d3a39; }
+        .step-num { color: #ef6f2e; font-size: 9px; letter-spacing: 0.15em; }
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .chevron { transform: rotate(90deg); }
+        .chevron { transition: transform 0.2s; display: inline-block; }
+    </style>
+</head>
+<body class="min-h-screen">
+<div class="max-w-[1200px] mx-auto w-full min-h-screen border-x border-graphite flex flex-col bg-factory-black shadow-2xl shadow-black">
+
+    <!-- Nav -->
+    <nav class="w-full border-b border-graphite grid grid-cols-6 uppercase tracking-widest text-[9px] text-cool-gray font-mono">
+        <div class="col-span-1 border-r border-graphite p-3 px-6 flex items-center">
+            <a href="index.html" class="font-serif-logo text-xl normal-case text-factory-light-gray leading-none tracking-normal hover:opacity-80 transition-opacity">DHI<br>AGENT</a>
+        </div>
+        <div class="col-span-1 border-r border-graphite p-3 px-6 flex items-center hover:text-white cursor-pointer">DOCS</div>
+        <a href="setup.html" class="col-span-1 border-r border-graphite p-3 px-6 flex items-center text-white bg-graphite">TUTORIAL</a>
+        <div class="col-span-2 border-r border-graphite p-3 px-6 flex items-center">
+            <a href="https://github.com/Arya-shivam/SecondBrainRAG" target="_blank" class="flex items-center gap-3 hover:text-white transition-colors w-full">
+                SOCIALS &nbsp;&nbsp;&nbsp;
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+        </div>
+        <div class="col-span-1 p-3 px-6 flex items-center justify-between">
+            <span>THEME</span>
+            <div class="w-6 h-3 rounded-full border border-graphite flex items-center px-[1px]">
+                <div class="w-2 h-2 rounded-full bg-factory-light-gray"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="border-b border-graphite px-8 py-8">
+        <p class="text-[8px] font-mono uppercase tracking-[0.2em] text-cool-gray mb-2">SETUP GUIDE &bull; v1.0.0</p>
+        <h1 class="font-serif-logo text-2xl text-factory-light-gray mb-2">Getting Dhi Running in &lt; 10 Minutes</h1>
+        <p class="text-[11px] text-cool-gray max-w-2xl leading-relaxed">
+            Everything runs on your machine — no cloud, no API costs, no data leaving your control. You need Docker Desktop and a Telegram bot token. That's it.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2 font-mono text-[8px]">
+            <span class="border border-graphite px-2 py-1 text-cool-gray">Docker Desktop</span>
+            <span class="border border-graphite px-2 py-1 text-cool-gray">Git</span>
+            <span class="border border-graphite px-2 py-1 text-cool-gray">8GB RAM min</span>
+            <span class="border border-graphite px-2 py-1 text-cool-gray">~6GB disk</span>
+            <span class="border border-code-orange px-2 py-1 text-code-orange">Telegram account (for bot)</span>
+        </div>
+    </div>
+
+    <!-- Steps -->
+    <main class="flex-1">
+
+        <!-- Step 1: Clone -->
+        <div class="border-b border-graphite grid grid-cols-1 md:grid-cols-3">
+            <div class="p-6 px-8 border-r border-graphite">
+                <p class="step-num mb-1">01 / CLONE</p>
+                <h2 class="font-serif-logo text-lg text-factory-light-gray mb-2">Clone the Repo</h2>
+                <p class="text-[10px] text-cool-gray leading-relaxed">Get the project onto your machine.</p>
+            </div>
+            <div class="col-span-2 p-6 px-8">
+                <div class="code-block p-3 overflow-x-auto">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Terminal</p>
+                    <code class="text-[10px] text-code-orange whitespace-pre">git clone https://github.com/Arya-shivam/SecondBrainRAG.git
+cd SecondBrainRAG</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Configure .env -->
+        <div class="border-b border-graphite grid grid-cols-1 md:grid-cols-3">
+            <div class="p-6 px-8 border-r border-graphite">
+                <p class="step-num mb-1">02 / CONFIGURE</p>
+                <h2 class="font-serif-logo text-lg text-factory-light-gray mb-2">Set Up Your .env</h2>
+                <p class="text-[10px] text-cool-gray leading-relaxed">
+                    Two things are required: your Obsidian vault path (where Dhi writes notes) and your Telegram bot token. Create a bot at <span class="text-code-orange">@BotFather</span> on Telegram first.
+                </p>
+            </div>
+            <div class="col-span-2 p-6 px-8 space-y-3">
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Terminal</p>
+                    <code class="text-[10px] text-code-orange">cp .env.example .env</code>
+                </div>
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">.env — Required Variables</p>
+                    <code class="text-[10px] whitespace-pre"><span class="text-cool-gray"># Path to your local Obsidian vault</span>
+<span class="text-factory-light-gray">OBSIDIAN_VAULT_PATH</span>=<span class="text-code-orange">/absolute/path/to/your/vault</span>
+
+<span class="text-cool-gray"># Telegram bot token from @BotFather</span>
+<span class="text-factory-light-gray">TELEGRAM_BOT_TOKEN</span>=<span class="text-code-orange">123456:ABC-your-token-here</span>
+
+<span class="text-cool-gray"># Your Telegram user ID (so only you can use it)</span>
+<span class="text-factory-light-gray">TELEGRAM_ALLOWED_USER_ID</span>=<span class="text-code-orange">123456789</span></code>
+                </div>
+                <div class="border border-graphite p-3 text-[9px] text-cool-gray">
+                    <span class="text-code-orange">TIP</span> &mdash; Find your Telegram user ID by messaging <span class="text-code-orange">@userinfobot</span>.
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Start Services -->
+        <div class="border-b border-graphite grid grid-cols-1 md:grid-cols-3">
+            <div class="p-6 px-8 border-r border-graphite">
+                <p class="step-num mb-1">03 / LAUNCH</p>
+                <h2 class="font-serif-logo text-lg text-factory-light-gray mb-2">Start All Services</h2>
+                <p class="text-[10px] text-cool-gray leading-relaxed mb-4">One command starts the full stack.</p>
+                <div class="space-y-1 font-mono text-[8px] text-cool-gray">
+                    <div class="flex justify-between border-b border-graphite pb-1 mb-1">
+                        <span>Service</span><span>Port</span>
+                    </div>
+                    <div class="flex justify-between"><span>FastAPI (backend)</span><span class="text-graphite">:8000</span></div>
+                    <div class="flex justify-between"><span>OpenSearch</span><span class="text-graphite">:9200</span></div>
+                    <div class="flex justify-between"><span>PostgreSQL</span><span class="text-graphite">:5432</span></div>
+                    <div class="flex justify-between"><span>Airflow</span><span class="text-graphite">:8080</span></div>
+                    <div class="flex justify-between"><span>Langfuse</span><span class="text-graphite">:3000</span></div>
+                    <div class="flex justify-between"><span>Telegram Bot</span><span class="text-graphite">long-poll</span></div>
+                </div>
+            </div>
+            <div class="col-span-2 p-6 px-8 space-y-3">
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Terminal</p>
+                    <code class="text-[10px] text-code-orange">docker compose up -d</code>
+                </div>
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Verify everything is healthy</p>
+                    <code class="text-[10px] whitespace-pre"><span class="text-cool-gray">$</span> <span class="text-code-orange">docker compose ps</span>
+
+<span class="text-cool-gray">NAME              STATUS</span>
+dhi-api           <span class="text-green-400">healthy</span>
+dhi-opensearch    <span class="text-green-400">healthy</span>
+dhi-postgres      <span class="text-green-400">healthy</span>
+dhi-airflow       <span class="text-green-400">healthy</span>
+dhi-langfuse      <span class="text-green-400">healthy</span>
+dhi-telegram-bot  <span class="text-green-400">running</span></code>
+                </div>
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">API health check</p>
+                    <code class="text-[10px] text-code-orange">curl http://localhost:8000/health</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Ingest Content -->
+        <div class="border-b border-graphite grid grid-cols-1 md:grid-cols-3">
+            <div class="p-6 px-8 border-r border-graphite">
+                <p class="step-num mb-1">04 / INGEST</p>
+                <h2 class="font-serif-logo text-lg text-factory-light-gray mb-2">Feed Your Brain</h2>
+                <p class="text-[10px] text-cool-gray leading-relaxed">
+                    Three ways to ingest content. All end up in OpenSearch and your Obsidian vault as linked Markdown notes.
+                </p>
+            </div>
+            <div class="col-span-2 p-6 px-8 space-y-3">
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Option A — Telegram (recommended, from your phone)</p>
+                    <code class="text-[10px] whitespace-pre"><span class="text-cool-gray">Send any of these to @YourDhiBot:</span>
+<span class="text-code-orange">https://youtube.com/watch?v=...</span>   <span class="text-cool-gray"># YouTube transcript</span>
+<span class="text-code-orange">https://example.com/article</span>       <span class="text-cool-gray"># Web article</span>
+<span class="text-code-orange">Any raw text or note</span>              <span class="text-cool-gray"># Plain thought</span></code>
+                </div>
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Option B — Chrome Extension (one-click from browser)</p>
+                    <code class="text-[10px] whitespace-pre"><span class="text-cool-gray">1. Load</span> <span class="text-code-orange">chrome-extension/</span> <span class="text-cool-gray">folder in Chrome (Developer Mode)</span>
+<span class="text-cool-gray">2. Click the Dhi icon on any page or YouTube video</span>
+<span class="text-cool-gray">3. Desktop notification confirms when saved</span></code>
+                </div>
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Option C — Direct API</p>
+                    <code class="text-[10px] text-code-orange whitespace-pre">curl -X POST http://localhost:8000/api/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"source_url": "https://youtu.be/...", "content_type": "youtube"}'</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Query -->
+        <div class="border-b border-graphite grid grid-cols-1 md:grid-cols-3">
+            <div class="p-6 px-8 border-r border-graphite">
+                <p class="step-num mb-1">05 / QUERY</p>
+                <h2 class="font-serif-logo text-lg text-factory-light-gray mb-2">Ask Your Brain</h2>
+                <p class="text-[10px] text-cool-gray leading-relaxed">
+                    The <code class="text-code-orange">/ask</code> endpoint uses hybrid BM25 + vector search with RRF fusion, then generates a grounded answer using Llama 3.1 via OpenRouter.
+                </p>
+            </div>
+            <div class="col-span-2 p-6 px-8 space-y-3">
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">POST /ask</p>
+                    <code class="text-[10px] whitespace-pre"><span class="text-code-orange">curl</span> -X POST http://localhost:8000/ask \
+  -H <span class="text-cool-gray">"Content-Type: application/json"</span> \
+  -d <span class="text-cool-gray">'{
+    "question": "What did the video say about attention mechanisms?",
+    "top_k": 5
+  }'</span></code>
+                </div>
+                <div class="code-block p-3">
+                    <p class="text-[9px] text-cool-gray mb-2 uppercase tracking-wider">Response</p>
+                    <code class="text-[10px] whitespace-pre"><span class="text-cool-gray">{
+  "answer": "</span><span class="text-factory-light-gray">The video explains that attention is all you need... [src:yt_dQw4w]</span><span class="text-cool-gray">",
+  "sources": [{ "title": "</span><span class="text-code-orange">Transformers Explained</span><span class="text-cool-gray">", "score": 0.94 }],
+  "latency_ms": </span><span class="text-code-orange">1620</span><span class="text-cool-gray">
+}</span></code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stack Reference -->
+        <div class="border-b border-graphite">
+            <div class="p-3 px-6 border-b border-graphite">
+                <h3 class="font-display-wide tracking-widest uppercase text-[10px] text-factory-light-gray font-bold">STACK REFERENCE</h3>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4">
+                <div class="p-5 border-r border-graphite border-b md:border-b-0">
+                    <p class="text-code-orange font-mono text-[8px] mb-2 uppercase tracking-wider">INGESTION</p>
+                    <div class="space-y-1 font-mono text-[9px] text-cool-gray">
+                        <p>yt_fetcher.py</p>
+                        <p class="text-graphite pl-2">youtube-transcript-api</p>
+                        <p>universal_ingest.py</p>
+                        <p class="text-graphite pl-2">pymupdf, trafilatura</p>
+                        <p class="text-graphite pl-2">python-docx</p>
+                    </div>
+                </div>
+                <div class="p-5 border-r border-graphite border-b md:border-b-0">
+                    <p class="text-code-orange font-mono text-[8px] mb-2 uppercase tracking-wider">STORAGE</p>
+                    <div class="space-y-1 font-mono text-[9px] text-cool-gray">
+                        <p>PostgreSQL 16</p>
+                        <p class="text-graphite pl-2">documents, chunks</p>
+                        <p>OpenSearch</p>
+                        <p class="text-graphite pl-2">BM25 + 768d kNN</p>
+                        <p>Obsidian Vault</p>
+                        <p class="text-graphite pl-2">Markdown + Wikilinks</p>
+                    </div>
+                </div>
+                <div class="p-5 border-r border-graphite">
+                    <p class="text-code-orange font-mono text-[8px] mb-2 uppercase tracking-wider">RETRIEVAL</p>
+                    <div class="space-y-1 font-mono text-[9px] text-cool-gray">
+                        <p>LlamaIndex</p>
+                        <p class="text-graphite pl-2">Hybrid BM25 + vector</p>
+                        <p class="text-graphite pl-2">RRF fusion</p>
+                        <p>asyncpg</p>
+                        <p class="text-graphite pl-2">async DB ops</p>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <p class="text-code-orange font-mono text-[8px] mb-2 uppercase tracking-wider">INTERFACES</p>
+                    <div class="space-y-1 font-mono text-[9px] text-cool-gray">
+                        <p>FastAPI</p>
+                        <p class="text-graphite pl-2">/api/ingest, /ask</p>
+                        <p>Telegram Bot</p>
+                        <p class="text-graphite pl-2">telegram_bot.py</p>
+                        <p>Chrome Extension</p>
+                        <p class="text-graphite pl-2">one-click capture</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="border-b border-graphite">
+            <div class="p-3 px-6 border-b border-graphite">
+                <h3 class="font-display-wide tracking-widest uppercase text-[10px] text-factory-light-gray font-bold">TROUBLESHOOTING</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <div class="p-5 border-r border-b border-graphite">
+                    <details>
+                        <summary class="flex justify-between items-center font-mono text-[9px] text-factory-light-gray uppercase tracking-wider">
+                            <span>OpenSearch fails to start</span><span class="chevron text-cool-gray">&rsaquo;</span>
+                        </summary>
+                        <div class="mt-3 code-block p-3 text-[9px] font-mono text-cool-gray">
+                            Raise the virtual memory limit:<br><br>
+                            <span class="text-code-orange">sysctl -w vm.max_map_count=262144</span>
+                        </div>
+                    </details>
+                </div>
+                <div class="p-5 border-b border-graphite">
+                    <details>
+                        <summary class="flex justify-between items-center font-mono text-[9px] text-factory-light-gray uppercase tracking-wider">
+                            <span>Telegram bot not responding</span><span class="chevron text-cool-gray">&rsaquo;</span>
+                        </summary>
+                        <div class="mt-3 text-[9px] font-mono text-cool-gray">
+                            Check the token and your allowed user ID in <span class="text-code-orange">.env</span>, then restart:<br><br>
+                            <span class="text-code-orange">docker compose restart dhi-telegram-bot</span>
+                        </div>
+                    </details>
+                </div>
+                <div class="p-5 border-r border-graphite">
+                    <details>
+                        <summary class="flex justify-between items-center font-mono text-[9px] text-factory-light-gray uppercase tracking-wider">
+                            <span>Ingest silently fails</span><span class="chevron text-cool-gray">&rsaquo;</span>
+                        </summary>
+                        <div class="mt-3 text-[9px] font-mono text-cool-gray">
+                            Check the API logs for the real error:<br><br>
+                            <span class="text-code-orange">docker compose logs dhi-api --tail 50</span>
+                        </div>
+                    </details>
+                </div>
+                <div class="p-5">
+                    <details>
+                        <summary class="flex justify-between items-center font-mono text-[9px] text-factory-light-gray uppercase tracking-wider">
+                            <span>Notes not appearing in Obsidian</span><span class="chevron text-cool-gray">&rsaquo;</span>
+                        </summary>
+                        <div class="mt-3 text-[9px] font-mono text-cool-gray">
+                            Verify the vault path in <span class="text-code-orange">.env</span> is the absolute path. The Docker container mounts it as a volume — the directory must exist before <span class="text-code-orange">docker compose up</span>.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-graphite text-[9px] tracking-widest text-cool-gray uppercase font-mono font-light">
+        <div class="p-3 px-6 border-b border-graphite">
+            <span>BUILT WITH: FASTAPI &bull; OPENSEARCH &bull; POSTGRESQL &bull; AIRFLOW &bull; LLAMAINDEX &bull; LANGFUSE &bull; DOCKER</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-6">
+            <div class="col-span-2 p-3 px-6 border-b md:border-b-0 border-graphite md:border-r">DHI (&#x927;&#x940;) v1.0.0</div>
+            <div class="col-span-2 p-3 px-6 border-b md:border-b-0 border-graphite md:border-r md:text-center">
+                <a href="https://github.com/Arya-shivam/SecondBrainRAG" target="_blank" class="hover:text-white transition-colors">ARYA SHIVAM &nearr;</a>
+            </div>
+            <div class="col-span-2 p-3 px-6 text-center md:text-right opacity-80">MIT LICENSE &middot; 2026</div>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>
