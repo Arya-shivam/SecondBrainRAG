@@ -67,17 +67,19 @@ async def search_memory(query: str, top_k: int = 5) -> str:
     return "\n".join(lines)
 
 
-# ── Tool: save_note ───────────────────────────────────────────────────────────
+# ── Tool: save_note ───────────────────────────────────────────────────
 @mcp.tool()
-async def save_note(title: str, content: str, folder: str = "notes") -> str:
+async def save_note(title: str, content: str, folder: str = "6- Zettelkasten ( Main notes )") -> str:
     """
     Save a new Markdown note to the user's Obsidian vault and index it in OpenSearch.
+    Notes are saved into the Zettelkasten folder by default (atomic, permanent notes).
+    [[Wikilinks]] to related vault notes are automatically injected.
 
     Args:
         title:   Title for the note.
         content: The main body content of the note (Markdown supported).
-        folder:  Subfolder inside the vault (default: 'notes'). 
-                 Use descriptive names like 'work', 'research', 'ideas'.
+        folder:  Subfolder inside the vault. Defaults to Zettelkasten.
+                 Other options: '2-Source Materials', '1-Rough Notes', etc.
 
     Returns:
         Confirmation message with the path where the note was saved.
@@ -90,11 +92,11 @@ async def save_note(title: str, content: str, folder: str = "notes") -> str:
         title=title,
         text=content,
         date=date,
-        tags=["mcp-saved"],
+        tags=["mcp-saved", "ai-generated"],
         meta={},
     )
 
-    return f"✓ Note saved to: {filepath}\nIt has been indexed and is now searchable in your Second Brain."
+    return f"✓ Note saved to: {filepath}\nIt has been indexed and is now searchable in your Second Brain.\n[[Wikilinks]] to related notes were automatically injected."
 
 
 # ── Tool: list_sources ────────────────────────────────────────────────────────
