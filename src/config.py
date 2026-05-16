@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     # Obsidian vault path (set in .env as OBSIDIAN_VAULT_PATH)
     obsidian_vault_path: str = r"C:\Second Brain"
 
+    # Langfuse Observability
+    langfuse_secret_key: str = ""
+    langfuse_public_key: str = ""
+    langfuse_host: str = "http://localhost:3001"
+
     class Config:
         env_file = ".env"
         extra = "ignore"

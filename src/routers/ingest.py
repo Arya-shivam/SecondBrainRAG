@@ -7,6 +7,7 @@ import logging
 import httpx
 
 from src.ingest.universal_ingest import ingest
+from langfuse.decorators import observe
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -36,6 +37,7 @@ def _send_telegram_message(bot_token: str, chat_id: int, text: str):
         print(f"[TELEGRAM-CALLBACK] FAILED: {e}", flush=True)
 
 
+@observe()
 def run_ingestion_task(
     url: str,
     tags: List[str],

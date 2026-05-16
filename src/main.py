@@ -1,6 +1,9 @@
 import sys
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Force unbuffered stdout so print() appears immediately in terminal
 os.environ["PYTHONUNBUFFERED"] = "1"

@@ -9,6 +9,7 @@ grounding instruction so the model only answers from the provided context
 import httpx
 from src.config import settings
 from src.rag.retriever import RetrievedChunk
+from langfuse.decorators import observe
 
 
 SYSTEM_PROMPT = """You are Dhi, a personal knowledge assistant.
@@ -32,6 +33,7 @@ def _build_context(chunks: list[RetrievedChunk]) -> str:
     return "\n\n".join(parts)
 
 
+@observe(as_type="generation")
 async def generate_answer(
     question: str,
     chunks: list[RetrievedChunk],
