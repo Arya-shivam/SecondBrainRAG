@@ -16,7 +16,7 @@ x-airflow-common:
     AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW__API_AUTH__JWT_SECRET:-airflow_jwt_secret}
     AIRFLOW__API_AUTH__JWT_ISSUER: ${AIRFLOW__API_AUTH__JWT_ISSUER:-airflow}
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-langchain-text-splitters httpx opensearchpy pydantic}
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-langchain-text-splitters httpx opensearch-py pydantic}
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
@@ -132,7 +132,7 @@ services:
       _AIRFLOW_WWW_USER_CREATE: 'true'
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
-      _PIP_ADDITIONAL_REQUIREMENTS: 'langchain-text-splitters httpx opensearchpy pydantic'
+      _PIP_ADDITIONAL_REQUIREMENTS: 'langchain-text-splitters httpx opensearch-py pydantic'
     user: "0:0"
 
   airflow-cli:
@@ -198,6 +198,21 @@ services:
       - ./src:/app/src
       - ./scripts:/app/scripts
       # Use the real Obsidian vault if provided in .env, otherwise fallback to ./data
+      - ${OBSIDIAN_VAULT_PATH:-./data}:/app/data
+      
+  telegram-bot:
+    build: .
+    command: ["uv", "run", "python", "scripts/telegram_bot.py"]
+    env_file:
+      - .env
+    environment:
+      - API_URL=http://fastapi-app:8000/api/ingest
+    depends_on:
+      fastapi-app:
+        condition: service_started
+    volumes:
+      - ./src:/app/src
+      - ./scripts:/app/scripts
       - ${OBSIDIAN_VAULT_PATH:-./data}:/app/data
 
 volumes:

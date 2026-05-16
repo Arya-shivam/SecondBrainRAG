@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 # Constants
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-API_URL = "http://localhost:8000/api/ingest"
+API_URL = os.getenv("API_URL", "http://localhost:8000/api/ingest")
 VAULT = Path(settings.obsidian_vault_path)
 DAILY_NOTES_FOLDER = "0-Daily Notes"
 

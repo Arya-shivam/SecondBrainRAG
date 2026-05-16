@@ -11,7 +11,7 @@ It is a frictionless, localized Second Brain. Instead of manually organizing not
 Dhi runs on a containerized, local-first stack, orchestrated by Docker Compose and `uv`.
 
 1. **Ingestion Layer (Frictionless Capture):**
-   - **Interfaces:** A Telegram Bot (for mobile) and a Chrome Extension (for desktop).
+   - **Interfaces:** A Telegram Bot (for mobile) and a Chrome Extension (for desktop). The Telegram Bot runs automatically inside the `docker-compose` environment and long-polls for any URLs sent while offline.
    - **Processing:** A FastAPI backend uses `BackgroundTasks` to parse YouTube transcripts (`youtube-transcript-api`), PDFs (`pymupdf`), and web articles (`trafilatura`) without blocking the UI.
    - **Storage:** Parsed text is saved directly to your local file system as Markdown inside an Obsidian vault.
 2. **Indexing & Retrieval Layer (Hybrid Search):**
